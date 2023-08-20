@@ -9,7 +9,7 @@ import 'dotenv/config'
 
 const app = express()
 
-const PORT = config.PORT
+const PORT = config.PORT || 5050
 
 app.use(cors({
     credentials: true
@@ -25,8 +25,6 @@ async function start() {
             useNewURLParser: true,
             useUnifiedTopology: true,
             useCreateIndex: true
-        }, () => {
-            console.log('connect to database')
         }
     } catch (error) {
         if (error instanceof Error) {
