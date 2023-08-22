@@ -6,9 +6,6 @@ const level = process.env.LogLevel
 const logger: Logger = pino({
     transport: {
         target: 'pino-pretty',
-        options: {
-            colorize: true
-        }
     },
     level,
     base: {
