@@ -7,8 +7,6 @@ const taskSchema = new Schema({
     owner: { type: Schema.Types.ObjectId, ref: 'User' },
 }, { timestamps: true })
 
-
-
 type Task = InferSchemaType<typeof taskSchema>;
 
-module.exports = model<Task>('Task', taskSchema)
+export default model<Task>('Task', taskSchema)

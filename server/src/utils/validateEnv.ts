@@ -11,17 +11,22 @@ dotenv.config({ path: path.resolve(__dirname, "./config.env") });
 interface ENV {
     PORT: number | undefined;
     MONGO_URI: string | undefined;
+    JWT_SECRET: string | undefined;
+    BASE_URL: string | undefined;
 }
 
 interface Config {
     PORT: number;
     MONGO_URI: string;
+    JWT_SECRET: string
 }
 
 const getConfig = (): ENV => {
     return {
         PORT: process.env.PORT ? Number(process.env.PORT) : undefined,
-        MONGO_URI: process.env.MONGO_URI
+        MONGO_URI: process.env.MONGO_URI,
+        JWT_SECRET: process.env.JWT_SECRET,
+        BASE_URL: process.env.BASE_URL
     };
 };
 
