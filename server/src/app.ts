@@ -1,10 +1,10 @@
 import express, { Request, Response, NextFunction } from 'express';
+import createHttpError, { isHttpError} from 'http-errors';
 import connectToBd from './utils/connectToDb.js';
 import router from './routes/routes.js';
 import logger from './utils/logger.js';
 import morgan from 'morgan';
 import 'dotenv/config'
-import createHttpError, { isHttpError} from 'http-errors';
 
 const PORT = process.env.PORT || 5050
 
@@ -30,11 +30,11 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
     }
     res.status(statusCode).json({ error: errorMessage })
 }) 
+
 connectToBd()
 
 app.listen(PORT, () => {
     logger.info(`Server started at http://localhost:${PORT}`)
-
 })
 
 // import config from './utils/validateEnv.js'

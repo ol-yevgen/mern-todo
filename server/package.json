@@ -42,7 +42,6 @@
     "@typescript-eslint/parser": "^6.4.0",
     "eslint": "^8.47.0",
     "nodemon": "^3.0.1",
-    "pino-pretty": "^10.2.0",
     "prettier": "^3.0.2",
     "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",
@@ -64,6 +63,7 @@
     "morgan": "^1.10.0",
     "nanoid": "^4.0.2",
     "pino": "^8.15.0",
+    "pino-pretty": "^10.2.0",
     "zod": "^3.22.2"
   }
 }
