@@ -5,7 +5,7 @@ const router = Router()
 
 router.get('/', async (req: Request, res: Response) => res.status(200).json({ message: 'test check is OK' }))
 
-router.use('/api/tasks', tasks)
+router.use(tasks)
 router.use(user)
 
 export default router

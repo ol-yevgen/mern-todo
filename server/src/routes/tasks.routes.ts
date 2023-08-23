@@ -2,7 +2,7 @@ import { getTasks, getTask, createTask, updateTask, deleteTask } from '../contro
 import { Router } from 'express'
 
 const router = Router()
-router.get('/', getTasks)
+router.get('/api/tasks', getTasks)
 router.get('/api/tasks/:taskId', getTask)
 router.post('/api/tasks', createTask)
 router.patch('/api/tasks/:taskId', updateTask)
