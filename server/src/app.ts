@@ -30,11 +30,11 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
     }
     res.status(statusCode).json({ error: errorMessage })
 }) 
+connectToBd()
 
 app.listen(PORT, () => {
-    logger.info(`Server started at http://localhost:${PORT}`),
+    logger.info(`Server started at http://localhost:${PORT}`)
 
-    connectToBd()
 })
 
 // import config from './utils/validateEnv.js'
