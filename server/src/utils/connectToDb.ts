@@ -10,6 +10,7 @@ async function connectToBd() {
             useUnifiedTopology: true,
             useCreateIndex: true
         }
+        logger.info('Connected to mongoDB')
     } catch (error){
         if (error instanceof Error) {
             logger.error(`Server error: ${error.message}`);
