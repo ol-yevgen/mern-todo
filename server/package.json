@@ -5,10 +5,9 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "dev": "npx nodemon",
+    "dev": "npx kill-port 4000 5000 && npx nodemon",
     "build": "rimraf build && tsc",
     "start": "npm run build && node build/app",
-    "stop": "npx kill-port 3000 4000 5000",
     "lint": "npx eslint ./src",
     "format": "npx eslint ./src --fix",
     "ts.check": "tsc --project tsconfig.json",
