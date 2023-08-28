@@ -40,6 +40,7 @@ export const Task: FC<TaskProps> = ({ data }) => {
                 <CheckBox
                     checked={checked}
                     setChecked={setChecked}
+                    id={_id}
                 />
             </Box>
 

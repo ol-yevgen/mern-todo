@@ -5,8 +5,8 @@ import { formateDate } from '../../utils/formateDate'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useHttp } from "../../hooks/http.hook";
 import EditIcon from '@mui/icons-material/Edit';
-import { FC, useContext } from "react";
 import { Spinner } from "../UI/Spinner";
+import { FC, useContext } from "react";
 
 interface TaskInfoTypes {
     create: string,
@@ -62,7 +62,7 @@ export const TaskInfo: FC<TaskInfoTypes> = ({ create, update, checked, id }) => 
             </Box>
             <Divider orientation="vertical" flexItem />
 
-            <Box sx={{ display: 'flex', justifyContent: 'center', width: '30%' }}>
+            <Box sx={{ display: 'flex', justifyContent:'space-around', width: '30%', pl: '10px' }}>
                 <IconButton size="small" color="inherit">
                     <EditIcon />
                 </IconButton>

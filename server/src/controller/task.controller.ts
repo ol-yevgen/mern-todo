@@ -17,8 +17,6 @@ export const getTasks: RequestHandler = async (req: Request, res: Response, next
 export const getTask: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
     const taskId = req.params.taskId
 
-    logger.info(taskId)
-
     try {
         if (!mongoose.isValidObjectId(taskId)) {
             throw createHttpError(400, 'Invalid task id')
@@ -94,7 +92,6 @@ export const updateTask: RequestHandler<UpdateTaskParams, unknown, UpdateTaskBod
     const titleExisted = await Task.findOne({ title })
     const textExisted = await Task.findOne({ text })
 
-
     try {
         const task = await Task.findById(taskId).exec()
 
@@ -128,6 +125,35 @@ export const updateTask: RequestHandler<UpdateTaskParams, unknown, UpdateTaskBod
         const updatedTask = await task.save()
 
         res.status(201).json(updatedTask)
+    } catch (error) {
+        next(error)
+    }
+}
+interface DoneTaskBody {
+    done: boolean 
+}
+
+export const doneTask: RequestHandler<UpdateTaskParams, unknown, DoneTaskBody, unknown> = async (req, res, next) => {
+    const taskId = req.params.taskId
+    const { done } = req.body
+
+    try {
+        const task = await Task.findById(taskId).exec()
+        const message = done ? 'Task has been done' : 'Task under the maintenance'
+
+        if (!task) {
+            throw createHttpError(404, 'Task not found')
+        }
+
+        if (!mongoose.isValidObjectId(taskId)) {
+            throw createHttpError(400, 'Invalid task id')
+        }
+
+        task.done = done
+
+        await task.save()
+
+        res.status(201).json(message)
     } catch (error) {
         next(error)
     }
