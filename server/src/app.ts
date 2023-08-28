@@ -4,6 +4,7 @@ import connectToBd from './utils/connectToDb.js';
 import router from './routes/routes.js';
 import logger from './utils/logger.js';
 import morgan from 'morgan';
+import cors from 'cors'
 import 'dotenv/config'
 
 const PORT = process.env.PORT || 5050
@@ -12,6 +13,7 @@ const app = express()
 
 app.use(morgan('dev'))
 app.use(express.json())
+app.use(cors())
 app.use(router)
 
 app.use((req: Request, res: Response, next: NextFunction) => {
