@@ -11,7 +11,7 @@ interface LogoTypes {
 
 export const Logo: FC<LogoTypes> = ({ variant, xs, md }) => {
     const { isAuthenticated } = useContext(AuthContext)
-    const nav = isAuthenticated ? '/tasks' : 'login'
+    const nav = isAuthenticated ? '/tasks' : '/'
 
     return (
         <Link to={nav}>

@@ -1,32 +1,54 @@
+import { TasksContext } from "../../context/TasksContext";
 import { Box, Divider, IconButton } from "@mui/material"
-import EditIcon from '@mui/icons-material/Edit';
+import { useDeleteTask } from '../../utils/deleteTask'
+import { formateDate } from '../../utils/formateDate'
 import DeleteIcon from '@mui/icons-material/Delete';
-import { FC } from "react";
+import { useHttp } from "../../hooks/http.hook";
+import EditIcon from '@mui/icons-material/Edit';
+import { FC, useContext } from "react";
+import { Spinner } from "../UI/Spinner";
 
 interface TaskInfoTypes {
     create: string,
-    update: string
+    update: string,
+    checked: boolean,
+    id: string,
 }
 
-export const TaskInfo: FC<TaskInfoTypes>= ({create, update}) => {
+export const TaskInfo: FC<TaskInfoTypes> = ({ create, update, checked, id }) => {
+    const { request, loading } = useHttp()
+    const { tasks, setTasks } = useContext(TasksContext)
+    const deleteTask = useDeleteTask(id, tasks, setTasks, request)
+
+    if (loading) {
+        return <Spinner/>
+    }
+
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: '10px', }}>
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+        <Box sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderTop: 1,
+            borderColor: 'border.default',
+            pt: '10px'
+        }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', }}>
                 <Box
                     sx={{
-                        color: "text.primary",
+                        color: checked ? 'text.secondary' : "text.primary",
                         fontSize: '12px',
                         component: "span",
                         width: '50%',
                         height: '100%'
                     }}
                 >
-                    Created: <br />{create}
+                    Created: <br />{formateDate(create)}
                 </Box>
                 <Divider orientation="vertical" flexItem />
                 <Box
                     sx={{
-                        color: "text.primary",
+                        color: checked ? 'text.secondary' : "text.primary",
                         fontSize: '12px',
                         component: "span",
                         width: '50%',
@@ -35,7 +57,7 @@ export const TaskInfo: FC<TaskInfoTypes>= ({create, update}) => {
 
                     }}
                 >
-                    Updated: <br />{update}
+                    Updated: <br />{formateDate(update)}
                 </Box>
             </Box>
             <Divider orientation="vertical" flexItem />
@@ -45,7 +67,11 @@ export const TaskInfo: FC<TaskInfoTypes>= ({create, update}) => {
                     <EditIcon />
                 </IconButton>
 
-                <IconButton size="small" color="inherit">
+                <IconButton
+                    size="small"
+                    color="inherit"
+                    onClick={deleteTask}
+                >
                     <DeleteIcon />
                 </IconButton>
             </Box>

@@ -29,6 +29,7 @@ export const MainLayout: FC = () => {
                             {
                                 display: 'flex',
                                 justifyContent: 'center',
+                                width: '100%',
                                 px: { xs: '20px', sm: '0' }
                             }
                         }>

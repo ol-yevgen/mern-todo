@@ -1,16 +1,40 @@
-import { Card,  Typography, Divider, Box } from '@mui/material';
-import { useState} from 'react';
+import { Card, Typography, Box } from '@mui/material';
+import { FC, useState } from 'react';
 import { CheckBox, TaskTitle, TaskInfo } from '../index'
+import { TaskType as TaskModel } from '../../types/types';
 
-export const Task = () => {
-    const [checked, setChecked] = useState<boolean>(false);
+interface TaskProps {
+    data: TaskModel,
+}
+
+export const Task: FC<TaskProps> = ({ data }) => {
+    const { title, text, done, createdAt, updatedAt, _id} = data
+    const [checked, setChecked] = useState<boolean>(done);
 
     return (
-        <Card sx={{ maxWidth: { sx: '100%', md: 345 }, p: '10px' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: '10px' }}>
+        <Card sx={{
+            maxWidth: { xs: '100%', md: 345 },
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            color: checked ? 'text.secondary' : "text.primary",
+            p: '10px'
+        }}>
+            <Box sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderBottom: 1,
+                borderColor: 'border.default',
+                pb: '10px',
+            }}
+
+            >
                 <TaskTitle
                     checked={checked}
-                    title='Lizard gfdgd'
+                    title={title}
+                    id={_id}
                 />
 
                 <CheckBox
@@ -18,21 +42,21 @@ export const Task = () => {
                     setChecked={setChecked}
                 />
             </Box>
-            <Divider />
+
             <Typography
+                color={checked ? 'text.secondary' : "text.primary"}
+                height='100%'
                 variant="body2"
-                color="text.primary"
                 py='20px'
             >
-                Lizards are a widespread group of squamate reptiles, with over 6,000
-                species, ranging across all continents except Antarctica
+                {text}
             </Typography>
 
-            <Divider />
-
             <TaskInfo
-                create='26 Aug 2023'
-                update='26 Aug 2023'
+                create={createdAt}
+                update={updatedAt}
+                checked={checked}
+                id={_id}
             />
 
         </Card>

@@ -3,7 +3,7 @@ import { useCallback, useState, useEffect} from "react"
 const storageName = 'userData'
 
 export const useAuth = () => {
-    const [token, setToken] = useState<boolean>(false)
+    const [token, setToken] = useState<boolean>(true)
     const [ready, setReady] = useState<boolean>(false)
     const [userId, setUserId] = useState<string | null>(null)
 

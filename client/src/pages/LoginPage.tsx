@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AuthContext } from '../context/AuthContext';
 import { AccountCircle } from '@mui/icons-material';
-import { FC, useContext } from "react"
+import { FC, FormEvent, useContext } from "react"
 import * as yup from 'yup';
 
 interface IFormInputs {
@@ -36,7 +36,7 @@ export const LoginPage: FC = () => {
             errors,
             isValid,
         },
-        handleSubmit,
+        // handleSubmit,
         reset
     } = useForm(
         {
@@ -49,8 +49,8 @@ export const LoginPage: FC = () => {
         }
     )
 
-    const onHandleSubmit: SubmitHandler<IFormInputs> = () => {
-        console.log(getValues());
+    const onHandleSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
 
         login()
         reset();
@@ -65,7 +65,6 @@ export const LoginPage: FC = () => {
                 </Typography>
                 <form
                     autoComplete='off'
-                    onSubmit={handleSubmit(onHandleSubmit)}
                     style={{ width: '100%', marginTop: '1rem' }}
                 >
                     <Input

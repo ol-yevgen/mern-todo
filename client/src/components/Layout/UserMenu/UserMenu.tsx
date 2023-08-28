@@ -27,8 +27,6 @@ interface UserMenuType {
 export const UserMenu: FC<UserMenuType> = ({ handleClose, anchorElUser, logoutHandler }) => {
     const open = Boolean(anchorElUser);
 
-
-
     return (
         <Menu
             anchorEl={anchorElUser}

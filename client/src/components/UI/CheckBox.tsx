@@ -17,7 +17,7 @@ export const CheckBox: FC<CheckBoxType> = ({ checked, setChecked }) => {
             sx={{
                 color: 'text.primary',
                 '&.Mui-checked': {
-                    color: 'text.primary',
+                    color: 'text.secondary',
                 },
             }}
             checked={checked}

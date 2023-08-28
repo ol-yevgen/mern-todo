@@ -11,3 +11,6 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+
+// Удалить таск на фронте через фильтр

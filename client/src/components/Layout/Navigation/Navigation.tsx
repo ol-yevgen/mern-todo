@@ -16,7 +16,7 @@ const authNav = [
 const notAuthNav = [
     {
         title: 'Login',
-        route: '/login'
+        route: '/'
     },
     {
         title: 'Sign Up',

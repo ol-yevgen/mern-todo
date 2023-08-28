@@ -48,13 +48,17 @@ export const useToggleColorMode = () => {
                 ...(mode === 'light'
                     ? {
                         primary: teal[900],
-                        // secondary: teal[900],
+                        secondary: blueGrey[300],
                     }
                     : {
                         primary: teal[50],
-                        // secondary: teal[50],
+                        secondary: '#6f787d',
+                        // secondary: blueGrey[500],
                     }),
             },
+            border: {
+                default: '#8989895d',
+            }
         },
     });
 

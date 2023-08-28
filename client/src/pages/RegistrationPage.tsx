@@ -5,7 +5,7 @@ import { AccountCircle } from '@mui/icons-material';
 import { Input, SubmitButton } from "../components";
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
-import { FC } from "react"
+import { FC, FormEvent } from "react"
 
 interface IFormInputs {
     name: string,
@@ -48,7 +48,7 @@ export const RegistrationPage: FC = () => {
             errors,
             isValid,
         },
-        handleSubmit,
+        // handleSubmit,
         reset
     } = useForm(
         {
@@ -61,7 +61,8 @@ export const RegistrationPage: FC = () => {
         }
     )
 
-    const onHandleSubmit: SubmitHandler<IFormInputs> = () => {
+    const onHandleSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
         console.log(getValues());
         navigate('/login')
         reset();
@@ -76,7 +77,7 @@ export const RegistrationPage: FC = () => {
                 </Typography>
                 <form
                     autoComplete='off'
-                    onSubmit={handleSubmit(onHandleSubmit)}
+                    // onSubmit={handleSubmit(onHandleSubmit)}
                     style={{ width: '100%', marginTop: '1rem' }}
                 >
                     <Input

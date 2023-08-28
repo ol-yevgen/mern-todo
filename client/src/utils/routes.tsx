@@ -20,7 +20,7 @@ export const useRoutes = (isAuthenticated: boolean) => {
                     element={<ProfilePage />}
                 />
                 <Route
-                    path='/task/:id'
+                    path='/tasks/:id'
                     element={<TaskDetailPage />}
                 />
                 <Route
@@ -32,7 +32,7 @@ export const useRoutes = (isAuthenticated: boolean) => {
                     element={<SettingsPage />}
                 />
                 <Route
-                    path="*"
+                    path='/'
                     element={<Navigate replace to="/tasks" />}
                 />
             </Routes>
@@ -41,7 +41,7 @@ export const useRoutes = (isAuthenticated: boolean) => {
         return (
             <Routes>
                 <Route
-                    path='/login'
+                    path='/'
                     element={<LoginPage />}
                 />
                 <Route
@@ -50,7 +50,7 @@ export const useRoutes = (isAuthenticated: boolean) => {
                 />
                 <Route
                     path="*"
-                    element={<Navigate replace to="/login" />}
+                    element={<Navigate replace to="/" />}
                 />
             </Routes>
         )

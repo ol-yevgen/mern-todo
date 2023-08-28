@@ -22,7 +22,7 @@ export const MainNav = () => {
 
     const logoutHandler = () => {
         logout()
-        navigate('/login')
+        navigate('/')
     }
 
     return (
