@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, RequestHandler } from 'express'
 import Task from '../models/task.model.js'
 import createHttpError from 'http-errors'
 import mongoose from 'mongoose'
+import logger from '../utils/logger.js'
 // import logger from '../utils/logger.js'
 
 export const getTasks: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
@@ -15,6 +16,8 @@ export const getTasks: RequestHandler = async (req: Request, res: Response, next
 
 export const getTask: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
     const taskId = req.params.taskId
+
+    logger.info(taskId)
 
     try {
         if (!mongoose.isValidObjectId(taskId)) {
@@ -40,11 +43,13 @@ interface CreateNoteBody {
 }
 
 export const createTask: RequestHandler<unknown, unknown, CreateNoteBody, unknown> = async (req, res, next) => {
-    const {title, text} = req.body
-    const titleExisted = await Task.findOne({title})
-    const textExisted = await Task.findOne({text})
 
     try {
+        const { title, text } = req.body
+
+        const titleExisted = await Task.findOne({ title })
+        const textExisted = await Task.findOne({ text })
+
         if (!title) {
             throw createHttpError(400, 'Task must have a title')
         }
@@ -60,13 +65,15 @@ export const createTask: RequestHandler<unknown, unknown, CreateNoteBody, unknow
             throw createHttpError(400, 'Task with same text already exist')
         }
 
-        const newTask = await Task.create({
-            title: title,
-            text: text
+        const newTask = new Task({
+            title,
+            text
+            // owner: req.user.userId
         })
 
+        await newTask.save()
 
-        res.status(201).json(newTask)
+        res.status(201).json({ message: `Task ${title} has been created`})
     } catch (error) {
         next(error)
     }

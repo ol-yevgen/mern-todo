@@ -38,7 +38,7 @@
       "react-app/jest"
     ]
   },
-  "proxy": "https://mern-todo-server-ol-yevgen.vercel.app",
+  "proxy": "https://mern-todo-server-woad.vercel.app/",
 
   "browserslist": {
     "production": [
