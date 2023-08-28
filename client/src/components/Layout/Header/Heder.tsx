@@ -1,5 +1,5 @@
-import { AppBar, Box, Toolbar, Container} from '@mui/material'
-import { Logo, MainNav, MobileNav} from '../../index'
+import { AppBar, Box, Toolbar, Container } from '@mui/material'
+import { Logo, MainNav, MobileNav } from '../../index'
 
 export const Header = () => {
 
@@ -17,11 +17,11 @@ export const Header = () => {
                         />
                     </Box>
 
-                    <MobileNav/>
-                    
+                    <MobileNav />
+
                     <Box sx={{
                         pl: { sm: '40px', },
-                        display: { xs: 'flex', md: 'none',  },
+                        display: { xs: 'flex', md: 'none', },
                         alignItems: 'center',
                         flexGrow: 1,
                     }}>
@@ -31,7 +31,7 @@ export const Header = () => {
                         />
                     </Box>
 
-                    <MainNav/>
+                    <MainNav />
                 </Toolbar>
             </Container>
         </AppBar>

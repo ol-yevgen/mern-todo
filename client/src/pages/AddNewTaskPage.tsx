@@ -58,7 +58,7 @@ export const AddNewTaskPage: FC = () => {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container maxWidth="xs">
             <Paper elevation={3} sx={{ padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Typography component="h1" variant="h5">
                     Create new task

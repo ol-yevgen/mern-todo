@@ -6,21 +6,21 @@ import { AuthContext } from '../../../context/AuthContext';
 const authNav = [
     {
         title: 'Home',
-        route: '/tasks'
+        route: '/tasks',
     },
     {
         title: 'New task',
-        route: '/add'
+        route: '/add',
     },
 ];
 const notAuthNav = [
     {
         title: 'Login',
-        route: '/'
+        route: '/',
     },
     {
         title: 'Sign Up',
-        route: '/registration'
+        route: '/registration',
     },
 ]
 
@@ -44,8 +44,6 @@ export const Navigation: FC<NavigationType> = ({ handleCloseNavMenu }) => {
                     </Button>
                 </Link>
             ))}
-
         </>
-
     );
 }

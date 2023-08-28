@@ -2,7 +2,6 @@ import { Checkbox } from '@mui/material';
 import { FC, useCallback } from 'react';
 import { useHttp } from "../../hooks/http.hook"
 
-
 interface CheckBoxType {
     checked: boolean,
     setChecked: React.Dispatch<React.SetStateAction<boolean>>,
@@ -10,6 +9,8 @@ interface CheckBoxType {
 }
 
 export const CheckBox: FC<CheckBoxType> = ({ checked, setChecked, id }) => {
+
+
     const { request } = useHttp()
 
     const doneTask = useCallback(async () => {
@@ -27,11 +28,11 @@ export const CheckBox: FC<CheckBoxType> = ({ checked, setChecked, id }) => {
     return (
         <Checkbox
             sx={{
-                color: 'text.primary',
-                '&.Mui-checked': {
-                    color: 'text.secondary',
-                },
-            }}
+                    color: 'text.primary',
+                    '&.Mui-checked': {
+                        color: 'text.secondary',
+                    },
+                }}
             checked={checked}
             onChange={handleChange}
         />

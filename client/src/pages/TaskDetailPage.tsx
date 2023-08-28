@@ -7,15 +7,16 @@ import { useHttp } from '../hooks/http.hook';
 
 export const TaskDetailPage: FC = () => {
     const [task, setTask] = useState<TaskModel>();
-    const { request, loading } = useHttp()
-    const taskId = useParams().id
+    const [checked, setChecked] = useState(task?.done as boolean);
 
-    // const [checked, setChecked] = useState<boolean>(done);
+    const { request, loading } = useHttp()
+    const taskId = useParams().id as string
 
     const getTask = useCallback(async () => {
         try {
             const fetched = await request(`/api/tasks/${taskId}`, 'GET', null )
             setTask(fetched)
+            setChecked(fetched.done)
         } catch (error) { }
 
     }, [taskId, request])
@@ -31,13 +32,13 @@ export const TaskDetailPage: FC = () => {
     return (
 
         <Card sx={{
-            // maxWidth: { xs: '100%', md: 345 },
+            maxWidth: { xs: '100%', md: 700 },
             height: '100%',
             width: '100%',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            color: task?.done ? 'text.secondary' : "text.primary",
+            color: checked ? 'text.secondary' : "text.primary",
             p: '10px'
         }}>
             <Box sx={{
@@ -51,22 +52,24 @@ export const TaskDetailPage: FC = () => {
 
             >
                 <TaskTitle
-                    checked={task?.done as boolean}
+                    checked={checked as boolean}
                     title={task?.title as string}
                     id={task?._id as string}
                 />
 
-                {/* <CheckBox
-                    checked={task?.done}
-                    setChecked={()=> {}}
-                /> */}
+                <CheckBox
+                    checked={checked}
+                    setChecked={setChecked}
+                    id={taskId}
+                />
             </Box>
 
             <Typography
                 flexGrow={1}
                 flexShrink={1}
                 flexBasis='auto'
-                color={task?.done ? 'text.secondary' : "text.primary"}
+                color={checked ? 'text.secondary' : "text.primary"}
+                minHeight='150px'
                 height='100%'
                 variant="body2"
                 py='20px'
@@ -77,7 +80,7 @@ export const TaskDetailPage: FC = () => {
             <TaskInfo
                 create={task?.createdAt as string} 
                 update={task?.updatedAt as string}
-                checked={task?.done as boolean}
+                checked={checked as boolean}
                 id={task?._id as string}
             />
 

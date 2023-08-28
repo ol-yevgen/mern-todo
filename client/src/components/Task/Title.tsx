@@ -38,6 +38,11 @@ export const TaskTitle: FC<TaskTitleTypes> = ({ checked, title, id }) => {
                             transition: 'all .5s',
                             zIndex: 0,
                         },
+                        '&:hover': {
+                            fontWeight: 'bold',
+                            transition: 'all .5s',
+                            textDecoration: 'underline'
+                        }
                     }
                     : {
                         '&:before': {
@@ -53,6 +58,11 @@ export const TaskTitle: FC<TaskTitleTypes> = ({ checked, title, id }) => {
                             transition: 'all .5s',
                             zIndex: 0,
                         },
+                        '&:hover': {
+                            fontWeight: 'bold',
+                            transition: 'all .5s',
+                            textDecoration: 'underline'
+                        }
                     }
                 }
             >

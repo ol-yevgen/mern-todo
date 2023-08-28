@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "../../mern-course/deleteTask.ts"  ]
 }

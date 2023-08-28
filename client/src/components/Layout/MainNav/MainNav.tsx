@@ -7,13 +7,13 @@ import { useNavigate } from 'react-router-dom';
 export const MainNav = () => {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     let { isAuthenticated, logout } = useContext(AuthContext)
+
     const navigate = useNavigate()
 
     const open = Boolean(anchorElUser);
     
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
-        
     };
 
     const handleClose = () => {
@@ -29,7 +29,7 @@ export const MainNav = () => {
         <>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', }}>
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', alignItems: 'center' } }}>
-                    <Navigation handleCloseNavMenu={() => { }} />
+                    <Navigation handleCloseNavMenu={handleClose} />
                     <ColorModeButton />
                 </Box>
                 {isAuthenticated

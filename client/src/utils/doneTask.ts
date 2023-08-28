@@ -1,13 +1,15 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { TaskType } from '../types/types'
 import { useNavigate } from 'react-router-dom';
 
-export const useDeleteTask = (
+export const useDoneTask = (
     id: string,
     tasksList: TaskType[],
     setListWithDeletedTask: React.Dispatch<React.SetStateAction<TaskType[]>>,
     request: (url: string, method?: string, body?: any, headers?: Record<string, string>) => Promise<any>,
 ) => {
+    // const [checked, setChecked] = useState<boolean>(done);
+
     const navigate = useNavigate()
 
     const deleteTask = useCallback(async () => {

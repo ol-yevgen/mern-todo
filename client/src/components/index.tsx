@@ -17,7 +17,8 @@ import { CheckBox } from "./UI/CheckBox";
 import { TaskTitle } from "./Task/Title";
 import { Input } from "./UI/Input";
 import { SubmitButton } from './UI/SubmitButton';
-import {Spinner} from './UI/Spinner'
+import { Spinner } from './UI/Spinner'
+import { DeleteButton } from "./UI/DeleteButton";
 
 export {
     // Layout
@@ -39,5 +40,6 @@ export {
     TaskTitle,
     Input,
     SubmitButton,
-    Spinner
+    Spinner,
+    DeleteButton,
 }

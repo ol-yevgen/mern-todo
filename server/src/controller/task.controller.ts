@@ -93,7 +93,6 @@ export const updateTask: RequestHandler<UpdateTaskParams, unknown, UpdateTaskBod
     const textExisted = await Task.findOne({ text })
     // const doneExisted = await Task.findByIdAndUpdate(taskId, {done: done})
 
-
     try {
         const task = await Task.findById(taskId).exec()
 
