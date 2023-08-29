@@ -5,7 +5,7 @@ import { AuthContext } from '../../../context/AuthContext';
 
 const authNav = [
     {
-        title: 'Home',
+        title: 'All tasks',
         route: '/tasks',
     },
     {

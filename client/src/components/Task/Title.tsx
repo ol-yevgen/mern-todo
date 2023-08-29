@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
-import { FC } from "react";
+import { FC, MouseEvent, useState } from "react";
 import { Link } from "react-router-dom";
+import { MouseOverPopover } from '../index'
 
 interface TaskTitleTypes {
     checked: boolean,
@@ -9,6 +10,18 @@ interface TaskTitleTypes {
 }
 
 export const TaskTitle: FC<TaskTitleTypes> = ({ checked, title, id }) => {
+    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+    const open = Boolean(anchorEl);
+
+    const handlePopoverOpen = (event: MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null);
+    };
+
+
     return (
         <Link
             to={`/tasks/${id}`}
@@ -23,6 +36,10 @@ export const TaskTitle: FC<TaskTitleTypes> = ({ checked, title, id }) => {
                 variant="h5"
                 m='0'
                 position='relative'
+                aria-owns={open ? 'mouse-over-popover' : undefined}
+                aria-haspopup="true"
+                onMouseEnter={handlePopoverOpen}
+                onMouseLeave={handlePopoverClose}
                 sx={checked
                     ? {
                         '&:before': {
@@ -37,11 +54,6 @@ export const TaskTitle: FC<TaskTitleTypes> = ({ checked, title, id }) => {
                             transform: 'translate(0, -50%)',
                             transition: 'all .5s',
                             zIndex: 0,
-                        },
-                        '&:hover': {
-                            fontWeight: 'bold',
-                            transition: 'all .5s',
-                            textDecoration: 'underline'
                         }
                     }
                     : {
@@ -58,16 +70,17 @@ export const TaskTitle: FC<TaskTitleTypes> = ({ checked, title, id }) => {
                             transition: 'all .5s',
                             zIndex: 0,
                         },
-                        '&:hover': {
-                            fontWeight: 'bold',
-                            transition: 'all .5s',
-                            textDecoration: 'underline'
-                        }
                     }
                 }
             >
                 {title}
             </Typography>
+            <MouseOverPopover
+                anchorEl={anchorEl}
+                open={open}
+                handlePopoverClose={handlePopoverClose}
+                checked={checked}
+            />
         </Link>
 
     )

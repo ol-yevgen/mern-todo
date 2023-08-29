@@ -6,9 +6,13 @@ import { Navigation } from './Layout/Navigation/Navigation';
 import { MobileNav } from './Layout/MobileNav/MobileNav'
 import { MainNav } from './Layout/MainNav/MainNav'
 
-// Component
+// Task
 import { Task } from './Task/Task'
 import { TaskInfo } from "./Task/TaskInfo";
+import { TaskActions } from "./Task/TaskActions";
+
+// Modal
+import { TransitionsModal } from '../components/Modal/Modal'
 
 // UI
 import { ColorModeButton } from './UI/ColorModeButton';
@@ -19,6 +23,7 @@ import { Input } from "./UI/Input";
 import { SubmitButton } from './UI/SubmitButton';
 import { Spinner } from './UI/Spinner'
 import { DeleteButton } from "./UI/DeleteButton";
+import { MouseOverPopover } from './UI/Popover'
 
 export {
     // Layout
@@ -29,9 +34,13 @@ export {
     MobileNav,
     Footer,
 
-    // Component 
+    // Task
     Task,
     TaskInfo,
+    TaskActions,
+
+    //Modal
+    TransitionsModal,
 
     // UI
     ColorModeButton,
@@ -42,4 +51,5 @@ export {
     SubmitButton,
     Spinner,
     DeleteButton,
+    MouseOverPopover,
 }

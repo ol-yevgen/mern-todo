@@ -58,6 +58,7 @@ export const Task: FC<TaskProps> = ({ data }) => {
                 update={updatedAt}
                 checked={checked}
                 id={_id}
+                actions={false}
             />
 
         </Card>

@@ -92,7 +92,7 @@ export const updateTask: RequestHandler<UpdateTaskParams, unknown, UpdateTaskBod
     const titleExisted = await Task.findOne({ title })
     const textExisted = await Task.findOne({ text })
     // const doneExisted = await Task.findByIdAndUpdate(taskId, {done: done})
-
+    
     try {
         const task = await Task.findById(taskId).exec()
 
@@ -104,7 +104,7 @@ export const updateTask: RequestHandler<UpdateTaskParams, unknown, UpdateTaskBod
             throw createHttpError(400, 'Invalid task id')
         }
 
-        if (task.id === done) {
+        if (task.done === done) {
             
             if (!title) {
                 throw createHttpError(400, 'Task must have a title')
@@ -114,11 +114,11 @@ export const updateTask: RequestHandler<UpdateTaskParams, unknown, UpdateTaskBod
                 throw createHttpError(400, 'Task must have a text')
             }
 
-            if (titleExisted) {
+            if (titleExisted && task.id !== taskId) {
                 throw createHttpError(400, 'Task with same title already exist')
             }
 
-            if (textExisted) {
+            if (textExisted && task.id !== taskId) {
                 throw createHttpError(400, 'Task with same text already exist')
             }
 

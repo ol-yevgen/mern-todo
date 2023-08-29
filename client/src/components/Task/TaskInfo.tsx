@@ -1,25 +1,24 @@
-import { TasksContext } from "../../context/TasksContext";
 import { Box, Divider, IconButton } from "@mui/material"
 import { formateDate } from '../../utils/formateDate'
 import { useHttp } from "../../hooks/http.hook";
 import EditIcon from '@mui/icons-material/Edit';
-import { Spinner } from "../UI/Spinner";
+import { Spinner, DeleteButton, TaskActions } from "../index";
 import { FC, useContext } from "react";
-import { DeleteButton } from "../UI/DeleteButton";
+
 
 interface TaskInfoTypes {
     create: string,
     update: string,
     checked: boolean,
     id: string,
+    actions: boolean
 }
 
-export const TaskInfo: FC<TaskInfoTypes> = ({ create, update, checked, id }) => {
+export const TaskInfo: FC<TaskInfoTypes> = ({ create, update, checked, id, actions }) => {
     const { loading } = useHttp()
-    const { tasks, setTasks } = useContext(TasksContext)
 
     if (loading) {
-        return <Spinner/>
+        return <Spinner />
     }
 
     return (
@@ -58,19 +57,16 @@ export const TaskInfo: FC<TaskInfoTypes> = ({ create, update, checked, id }) => 
                     Updated: <br />{formateDate(update)}
                 </Box>
             </Box>
-            <Divider orientation="vertical" flexItem />
 
-            <Box sx={{ display: 'flex', justifyContent:'space-around', width: '30%' }}>
-                <IconButton size="small" color="inherit">
-                    <EditIcon />
-                </IconButton>
+            {
+                actions ?
+                    <>
+                        <Divider orientation="vertical" flexItem />
+                        <TaskActions id={id} />
+                    </>
+                    : null
+            }
 
-                <DeleteButton
-                    id={id}
-                    tasksList={tasks}
-                    setListWithDeletedTask={setTasks}
-                />
-            </Box>
         </Box>
     )
 }

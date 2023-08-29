@@ -1,21 +1,18 @@
 import { BrowserRouter as Router } from 'react-router-dom'
+import { Header, Footer } from "../components/index"
 import { AuthContext } from "../context/AuthContext"
 import { Box, Container } from "@mui/material"
-import { Header, Footer} from "../components/index"
 import { useRoutes } from "../utils/routes"
-import { FC, useContext, useState } from "react"
-import { ModalContext } from '../context/ModalContext'
+import { FC, useContext } from "react"
 
 export const MainLayout: FC = () => {
-    const [modalAddTask, setModalAddTask] = useState<boolean>(false)
 
     const auth = useContext(AuthContext)
     const routes = useRoutes(auth.isAuthenticated)
 
     return (
-        < ModalContext.Provider value={{ modalAddTask, setModalAddTask }}>
-            <Router>
-                <Box minHeight='100vh' sx={{ width: '100%', display: 'flex', flexDirection: 'column', bgcolor: modalAddTask ? '': 'background.default' }}>
+        <Router>
+                <Box minHeight='100vh' sx={{ width: '100%', display: 'flex', flexDirection: 'column', bgcolor: 'background.default'}}>
                     <Header />
                     <Container maxWidth='xl' sx={
                         {
@@ -37,7 +34,6 @@ export const MainLayout: FC = () => {
                                     px: { xs: '20px', sm: '0' }
                                 }
                             }>
-
                                 {routes}
                             </Container>
                         </Box>
@@ -45,7 +41,6 @@ export const MainLayout: FC = () => {
                     <Footer />
                 </Box>
             </Router>
-        </ ModalContext.Provider>
 
     )
 }
