@@ -2,6 +2,7 @@ import { Typography } from "@mui/material";
 import { FC, MouseEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { MouseOverPopover } from '../index'
+import { capitalizeFirstWord } from '../../utils/capitalizeFirstWord'
 
 interface TaskTitleTypes {
     checked: boolean,
@@ -20,8 +21,7 @@ export const TaskTitle: FC<TaskTitleTypes> = ({ checked, title, id }) => {
     const handlePopoverClose = () => {
         setAnchorEl(null);
     };
-
-
+    
     return (
         <Link
             to={`/tasks/${id}`}
@@ -73,7 +73,7 @@ export const TaskTitle: FC<TaskTitleTypes> = ({ checked, title, id }) => {
                     }
                 }
             >
-                {title}
+                {capitalizeFirstWord(title)}
             </Typography>
             <MouseOverPopover
                 anchorEl={anchorEl}

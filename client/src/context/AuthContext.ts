@@ -1,25 +1,23 @@
 import { createContext } from "react";
 
-// export interface LoginTypes {
-//     jwtToken: string,
-//     id: string
-// }
-
 export interface AuthContextTypes {
-    isAuthenticated: boolean,
-    login: () => void,
+    login: (loggedIn: boolean,
+        authToken: string,
+        id: string) => void,
     logout: () => void,
-    token: boolean,
-    // token: string | null,
+    authToken: string | null,
+    loggedIn: boolean,
+    userId: string | null,
     ready: boolean
 }
 
 function noop() { }
 
 export const AuthContext = createContext<AuthContextTypes>({
-    isAuthenticated: false,
     login: noop,
     logout: noop,
-    token: false,
+    authToken: null,
+    loggedIn: false,
+    userId: null,
     ready: false
 })

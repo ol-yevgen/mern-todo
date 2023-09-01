@@ -2,6 +2,7 @@ import { Card, Typography, Box } from '@mui/material';
 import { FC, useState } from 'react';
 import { CheckBox, TaskTitle, TaskInfo } from '../index'
 import { TaskType as TaskModel } from '../../types/types';
+import { capitalizeFirstWord } from '../../utils/capitalizeFirstWord';
 
 interface TaskProps {
     data: TaskModel,
@@ -50,7 +51,7 @@ export const Task: FC<TaskProps> = ({ data }) => {
                 variant="body2"
                 py='20px'
             >
-                {text}
+                {capitalizeFirstWord(text)}
             </Typography>
 
             <TaskInfo

@@ -1,46 +1,44 @@
-import { useCallback, useState, useEffect} from "react"
+import { useCallback, useState, useEffect } from "react"
 
-const storageName = 'userData'
+const storageAuth = 'isAuth'
 
 export const useAuth = () => {
-    const [token, setToken] = useState<boolean>(true)
+    const [loggedIn, setLoggedIn] = useState<boolean>(false)
+    const [authToken, setAuthToken] = useState<string | null>(null)
     const [ready, setReady] = useState<boolean>(false)
     const [userId, setUserId] = useState<string | null>(null)
 
-    // const login = useCallback((jwtToken: string, id: string) => {
-    //     setToken(jwtToken)
-    //     setUserId(id)
+    const login = useCallback((loggedIn: boolean, token: string, id: string) => {
 
-    //     localStorage.setItem(storageName, JSON.stringify({
-    //         token: jwtToken, userId: id
-    //     }))
-    // }, [])
+        setAuthToken(token)
+        setLoggedIn(loggedIn)
+        setUserId(id)
+        localStorage.setItem(storageAuth, JSON.stringify({ loggedIn: loggedIn, token: token, userId: id,}))
 
-    const login = useCallback(() => {
-        setToken(true)
-
-        localStorage.setItem(storageName, JSON.stringify({
-            token
-        }))
-    }, [token])
+    }, [])
     
     const logout = useCallback(() => {
-        setToken(false)
+        setLoggedIn(false)
         setUserId(null)
-        localStorage.removeItem(storageName)
+        localStorage.removeItem(storageAuth)
     }, [])
 
     useEffect(() => {
-        const data = JSON.parse(localStorage.getItem(storageName ) as string ) as boolean
-
+        const data = JSON.parse(localStorage.getItem(storageAuth) as string
+        ) 
         if (data) {
-            login()
+            const { loggedIn, token, userId, } = data
+
+            login(loggedIn, token, userId)
+            setAuthToken(token)
+            setLoggedIn(loggedIn)
+            setUserId(userId)
         }
 
         setReady(true)
 
     }, [login])
     
-    return { login, logout, token, userId, ready}
+    return { login, logout, authToken, loggedIn, userId, ready}
 
 }

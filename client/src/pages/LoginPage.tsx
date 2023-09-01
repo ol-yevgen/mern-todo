@@ -6,6 +6,7 @@ import { AuthContext } from '../context/AuthContext';
 import { AccountCircle } from '@mui/icons-material';
 import { FC, FormEvent, useContext } from "react"
 import * as yup from 'yup';
+import { useHttp } from '../hooks/http.hook';
 
 interface IFormInputs {
     email: string,
@@ -27,7 +28,8 @@ const loginSchema = yup.object().shape({
 })
 
 export const LoginPage: FC = () => {
-    let { login } = useContext(AuthContext)
+    let { login, userId } = useContext(AuthContext)
+    const { request } = useHttp()
 
     const {
         register,
@@ -49,11 +51,22 @@ export const LoginPage: FC = () => {
         }
     )
 
-    const onHandleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const onHandleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
-        login()
-        reset();
+        try {
+            const data = await request('/api/auth/login', 'include', 'POST', getValues())
+
+            const {loggedIn, token, userId} = data
+            
+            
+            if (data) {
+                login(loggedIn, token, userId)
+
+                reset();
+            }
+
+        } catch (error) { }
     };
 
     return (

@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
-import createHttpError, { isHttpError} from 'http-errors';
+import errorHandler from './middleware/error.middleware.js';
 import connectToBd from './utils/connectToDb.js';
+import createHttpError from 'http-errors';
+import cookieParser from 'cookie-parser';
 import router from './routes/routes.js';
 import logger from './utils/logger.js';
 import morgan from 'morgan';
@@ -11,27 +13,19 @@ const PORT = process.env.PORT || 5050
 
 const app = express()
 
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}))
+app.use(cookieParser())
 app.use(morgan('dev'))
 app.use(express.json())
-app.use(cors())
 app.use(router)
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     next(createHttpError(404, 'Page not found'))
 })
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
-    let errorMessage = 'Unknown error occurred'
-    let statusCode = 500
-    if (isHttpError(error)) {
-        statusCode = error.status
-    }
-    if (error instanceof Error) {
-        errorMessage = error.message
-        logger.error(error)
-    }
-    res.status(statusCode).json({ error: errorMessage })
-}) 
+app.use(errorHandler) 
 
 connectToBd()
 
@@ -40,7 +34,6 @@ app.listen(PORT, () => {
 })
 
 // import config from './utils/validateEnv.js'
-// import cookieParser from 'cookie-parser';
 // import compression from 'compression'
 // import bodyParser from 'body-parser'
 // import cors from 'cors'

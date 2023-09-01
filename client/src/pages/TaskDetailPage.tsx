@@ -5,22 +5,28 @@ import { TaskType as TaskModel } from '../types/types';
 import { useParams } from 'react-router-dom';
 import { useHttp } from '../hooks/http.hook';
 import { ModalContext } from '../context/ModalContext'
-
 import { TransitionsModal } from '../components/Modal/Modal'
+import { capitalizeFirstWord } from '../utils/capitalizeFirstWord';
 
 export const TaskDetailPage: FC = () => {
     const [task, setTask] = useState<TaskModel>();
     const [checked, setChecked] = useState(task?.done as boolean);
     const [modalAddTask, setModalAddTask] = useState<boolean>(false)
+
     const { request, loading } = useHttp()
     const taskId = useParams().id as string
 
     const getTask = useCallback(async () => {
         try {
-            const fetched = await request(`/api/tasks/${taskId}`, 'GET', null)
+            const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
+            ) 
+            const fetched = await request(`/api/tasks/${taskId}`, 'include', 'GET', null, {
+                Authorization: `Bearer ${isAuth.token}`
+            })
             setTask(fetched)
             setChecked(fetched.done)
-        } catch (error) { }
+
+        } catch (error) {}
 
     }, [taskId, request])
 
@@ -86,7 +92,7 @@ export const TaskDetailPage: FC = () => {
                     variant="body2"
                     py='20px'
                 >
-                    {task?.text}
+                    {capitalizeFirstWord(task?.text as string)}
                 </Typography>
 
                 <TaskInfo

@@ -69,16 +69,23 @@ export const TransitionsModal: FC<TransitionsModalTypes> = ({ id, checked, getTa
 
     const onHandleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        
+
+
         try {
-            const formData = getValues()
+            const formattedData = {
+                title: getValues().title.toLowerCase(),
+                text: getValues().text.toLowerCase()
+            }
             const checkedStatus = { done: checked }
-            const bodyData = Object.assign(formData, checkedStatus)
+            const bodyData = Object.assign(formattedData, checkedStatus)
 
-            await request(`/api/tasks/${id}`, 'PATCH', bodyData, {
-                // Authorization: `Bearer ${auth.token}`
+            const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
+            ) 
+
+            await request(`/api/tasks/${id}`, 'include', 'PATCH', bodyData, {
+                Authorization: `Bearer ${isAuth.token}`
             })
-
+            
             handleClose()
             getTask()
             reset();
@@ -103,7 +110,7 @@ export const TransitionsModal: FC<TransitionsModalTypes> = ({ id, checked, getTa
         >
             <Fade in={modalAddTask}>
                 <Box sx={style}>
-                    <Paper  sx={{ padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: '8px'}}>
+                    <Paper sx={{ padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: '8px' }}>
                         <Typography component="h1" variant="h5">
                             Edit task
                         </Typography>

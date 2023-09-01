@@ -3,10 +3,13 @@ import Task from '../models/task.model.js'
 import createHttpError from 'http-errors'
 import mongoose from 'mongoose' 
 // import logger from '../utils/logger.js'
+interface UserIdRequest extends Request {
+    userId?: string
+}
 
-export const getTasks: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+export const getTasks: RequestHandler = async (req: UserIdRequest, res: Response, next: NextFunction) => {
     try {
-        const tasks = await Task.find().exec()
+        const tasks = await Task.find({owner: req.userId}).exec()
         res.status(200).json(tasks)
     } catch (error) {
         next(error)
@@ -33,13 +36,12 @@ export const getTask: RequestHandler = async (req: Request, res: Response, next:
     }
 } 
 
-interface CreateNoteBody {
+interface CreateTaskBody extends Response{
     title?: string,
     text?: string,
-    done?: boolean
 }
 
-export const createTask: RequestHandler<unknown, unknown, CreateNoteBody, unknown> = async (req, res, next) => {
+export const createTask = async (req: UserIdRequest, res: CreateTaskBody, next:NextFunction) => {
 
     try {
         const { title, text } = req.body
@@ -64,13 +66,13 @@ export const createTask: RequestHandler<unknown, unknown, CreateNoteBody, unknow
 
         const newTask = new Task({
             title,
-            text
-            // owner: req.user.userId
+            text,
+            owner: req.userId
         })
 
         await newTask.save()
 
-        res.status(201).json({ message: `Task ${title} has been created`})
+        res.status(201).json({ message: `Task has been created`})
     } catch (error) {
         next(error)
     }
@@ -114,62 +116,33 @@ export const updateTask: RequestHandler<UpdateTaskParams, unknown, UpdateTaskBod
                 throw createHttpError(400, 'Task must have a text')
             }
 
-            if (titleExisted && task.id !== taskId) {
+            if (titleExisted && (titleExisted.id !== taskId) ) {
                 throw createHttpError(400, 'Task with same title already exist')
             }
 
-            if (textExisted && task.id !== taskId) {
+            if (textExisted && (textExisted.id !== taskId)) {
                 throw createHttpError(400, 'Task with same text already exist')
             }
 
             task.title = title
             task.text = text
 
-            const updatedTask = await task.save()
+            await task.save()
 
-            res.status(201).json(updatedTask)
+            res.status(201).json({message: 'Task has been updated'})
         } else {
-            const message = done ? 'Task has been done' : 'Task under the maintenance'
+            const message = done ? 'Task has been done' : null
             task.done = done
 
             await task.save()
 
-            res.status(201).json(message)
+            res.status(201).json({message: message})
         }
         
     } catch (error) {
         next(error)
     }
 }
-// interface DoneTaskBody {
-//     done: boolean 
-// }
-
-// export const doneTask: RequestHandler<UpdateTaskParams, unknown, DoneTaskBody, unknown> = async (req, res, next) => {
-//     const taskId = req.params.taskId
-//     const { done } = req.body
-
-//     try {
-//         const task = await Task.findById(taskId).exec()
-        
-
-//         if (!task) {
-//             throw createHttpError(404, 'Task not found')
-//         }
-
-//         if (!mongoose.isValidObjectId(taskId)) {
-//             throw createHttpError(400, 'Invalid task id')
-//         }
-
-//         task.done = done
-
-//         await task.save()
-
-//         res.status(201).json(message)
-//     } catch (error) {
-//         next(error)
-//     }
-// }
 
 export const deleteTask: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
     const taskId = req.params.taskId
@@ -189,7 +162,7 @@ export const deleteTask: RequestHandler = async (req: Request, res: Response, ne
 
         await task.deleteOne()
 
-        res.status(204).json('Task has been deleted')
+        res.status(204).json({ message: 'Task has been deleted' })
     } catch (error) {
         next(error)
     }

@@ -7,8 +7,8 @@ import { TaskDetailPage } from '../pages/TaskDetailPage'
 import { AddNewTaskPage } from '../pages/AddNewTaskPage'
 import { SettingsPage } from '../pages/SettingsPage'
 
-export const useRoutes = (isAuthenticated: boolean) => {
-    if (isAuthenticated) {
+export const useRoutes = (loggedIn: boolean) => {
+    if (loggedIn) {
         return (
             <Routes>
                 <Route

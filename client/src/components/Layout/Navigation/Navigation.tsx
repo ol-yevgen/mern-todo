@@ -29,8 +29,8 @@ interface NavigationType {
 }
 
 export const Navigation: FC<NavigationType> = ({ handleCloseNavMenu }) => {
-    const { isAuthenticated } = useContext(AuthContext)
-    const nav = isAuthenticated ? authNav : notAuthNav
+    const { loggedIn } = useContext(AuthContext)
+    const nav = loggedIn ? authNav : notAuthNav
 
     return (
         <>

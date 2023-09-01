@@ -1,43 +1,53 @@
 import { FC, useCallback, useEffect, useState } from "react"
 import { Task, Spinner } from "../components/index"
-import { Box } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { useHttp } from "../hooks/http.hook"
 import { TaskType } from '../types/types';
-import { TasksContext } from '../context/TasksContext'
+import { useAuth } from "../hooks/auth.hook";
 
 export const TasksPage: FC = () => {
     const [tasks, setTasks] = useState<TaskType[]>([])
     const { request, loading } = useHttp()
-
+    const { authToken } = useAuth()
+    
     const fetchTasks = useCallback(async () => {
         try {
-            const fetched = await request('/api/tasks', 'GET', null)
+            const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
+            ) 
+            
+            const fetched = await request('/api/tasks', 'include', 'GET', null, {
+                Authorization: `Bearer ${isAuth.token}`
+            })
             setTasks(fetched)
         } catch (error) { }
     }, [request])
 
     useEffect(() => {
+        
         fetchTasks()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     if (loading) {
-        return <Spinner/>
+        return <Spinner />
     }
 
     return (
-        <TasksContext.Provider value={{tasks, setTasks}}>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: { xs: 'center', lg: 'flex-start' }, gap: '30px', width: '100%' }}>
-                {tasks.map((task) => {
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: { xs: 'center', lg: 'flex-start' }, gap: '30px', width: '100%' }}>
+
+            {tasks.length > 0
+                ? tasks.map((task) => {
                     return (
                         <Task
                             key={task._id}
                             data={task}
                         />
                     )
-                })}
-            </Box>
-        </TasksContext.Provider>
-
+                })
+                : <Typography component="h1" variant="h5">
+                    You don't have tasks
+                </Typography>
+            }
+        </Box>
     )
 }

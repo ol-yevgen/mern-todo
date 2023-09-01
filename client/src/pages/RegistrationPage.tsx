@@ -6,21 +6,22 @@ import { Input, SubmitButton } from "../components";
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { FC, FormEvent } from "react"
+import { useHttp } from '../hooks/http.hook';
 
 interface IFormInputs {
-    name: string,
-    surname: string,
+    firstName: string,
+    lastName: string,
     email: string,
     password: string
 }
 
 const registrationSchema = yup.object().shape({
-    name: yup
+    firstName: yup
         .string()
         .required()
         .min(2, 'Minimum 2 characters')
         .max(60, 'Maximum 60 characters'),
-    surname: yup
+    lastName: yup
         .string()
         .required()
         .min(2, 'Minimum 2 characters')
@@ -39,6 +40,7 @@ const registrationSchema = yup.object().shape({
 })
 
 export const RegistrationPage: FC = () => {
+    const { request } = useHttp()
     const navigate = useNavigate()
 
     const {
@@ -53,6 +55,8 @@ export const RegistrationPage: FC = () => {
     } = useForm(
         {
             defaultValues: {
+                firstName: "",
+                lastName: "",
                 email: "",
                 password: ""
             },
@@ -61,11 +65,20 @@ export const RegistrationPage: FC = () => {
         }
     )
 
-    const onHandleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const onHandleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        console.log(getValues());
-        navigate('/login')
-        reset();
+
+        try {
+            const data = await request('/api/user/registration', 'include', 'POST', getValues(), {
+                // Authorization: `Bearer ${auth.token}`
+            })
+
+            if (data) {
+                navigate('/tasks')
+                reset();
+            }
+
+        } catch (error) { }
     };
 
     return (
@@ -77,19 +90,18 @@ export const RegistrationPage: FC = () => {
                 </Typography>
                 <form
                     autoComplete='off'
-                    // onSubmit={handleSubmit(onHandleSubmit)}
                     style={{ width: '100%', marginTop: '1rem' }}
                 >
                     <Input
                         label='first name'
-                        name='name'
-                        error={errors?.name}
+                        name='firstName'
+                        error={errors?.firstName}
                         register={register}
                     />
                     <Input
                         label='Last name'
-                        name='surname'
-                        error={errors?.surname}
+                        name='lastName'
+                        error={errors?.lastName}
                         register={register}
                     />
                     <Input

@@ -21,7 +21,7 @@ const loginSchema = yup.object().shape({
 
 export const AddNewTaskPage: FC = () => {
     const navigate = useNavigate()
-    const { request } = useHttp()
+    const { request} = useHttp()
 
     const {
         register,
@@ -45,16 +45,22 @@ export const AddNewTaskPage: FC = () => {
 
     const onHandleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        try {
-            await request('/api/tasks', 'POST', getValues(), {
-                // Authorization: `Bearer ${auth.token}`
-            })
 
+        const formattedData = {
+            title: getValues().title.toLowerCase(),
+            text: getValues().text.toLowerCase()
+        }
+        
+        try {
+            const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
+            ) 
+            await request('/api/tasks', 'include', 'POST', formattedData, {
+                Authorization: `Bearer ${isAuth.token}`
+            })
             navigate('/tasks')
             reset();
 
         } catch (error) { }
-
     };
 
     return (

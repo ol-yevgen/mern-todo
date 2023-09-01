@@ -10,12 +10,15 @@ interface CheckBoxType {
 
 export const CheckBox: FC<CheckBoxType> = ({ checked, setChecked, id }) => {
 
-
     const { request } = useHttp()
 
     const doneTask = useCallback(async () => {
         try {
-            await request(`/api/tasks/${id}`, 'PATCH', { done: !checked })
+            const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
+            ) 
+            await request(`/api/tasks/${id}`, 'include', 'PATCH', { done: !checked }, {
+                Authorization: `Bearer ${isAuth.token}`
+            })
 
         } catch (error) { }
     }, [request, id, checked])

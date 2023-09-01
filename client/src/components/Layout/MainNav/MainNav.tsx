@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const MainNav = () => {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-    let { isAuthenticated, logout } = useContext(AuthContext)
+    let { loggedIn, logout } = useContext(AuthContext)
 
     const navigate = useNavigate()
 
@@ -32,7 +32,7 @@ export const MainNav = () => {
                     <Navigation handleCloseNavMenu={handleClose} />
                     <ColorModeButton />
                 </Box>
-                {isAuthenticated
+                {loggedIn
                     ? <Tooltip title="Account settings">
                         <IconButton
                             onClick={handleClick}
