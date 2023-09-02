@@ -17,7 +17,7 @@ export const Footer: FC = (props) => {
                     color: 'text.primary',
                     p: '20px'
                 }}>
-                Footer
+                Created by Oliinyk Yevgenii
             </Container>
         </Box>
     )
