@@ -10,12 +10,15 @@ import cors from 'cors'
 import 'dotenv/config'
 
 const PORT = process.env.PORT || 5050
-const BASE_FRONTEND_URL = process.env.BASE_FRONTEND_URL
+const BASE_FRONTEND_URL1 = process.env.BASE_FRONTEND_URL1 as string
+const BASE_FRONTEND_URL2 = process.env.BASE_FRONTEND_URL2 as string
 
 const app = express()
 
+logger.info(BASE_FRONTEND_URL1)
+
 app.use(cors({
-    origin: BASE_FRONTEND_URL,
+    origin: [BASE_FRONTEND_URL1, BASE_FRONTEND_URL2],
     credentials: true
 }))
 app.use(cookieParser())
