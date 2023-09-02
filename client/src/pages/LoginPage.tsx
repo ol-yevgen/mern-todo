@@ -55,7 +55,7 @@ export const LoginPage: FC = () => {
         event.preventDefault()
 
         try {
-            const data = await request('/api/auth/login', 'include', 'POST', getValues())
+            const data = await request('/api/auth/login', 'include', 'POST', 'cors', getValues())
 
             const { loggedIn, token, userId, userName } = data
             

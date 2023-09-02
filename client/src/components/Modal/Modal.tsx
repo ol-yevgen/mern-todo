@@ -82,7 +82,7 @@ export const TransitionsModal: FC<TransitionsModalTypes> = ({ id, checked, getTa
             const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
             ) 
 
-            await request(`/api/tasks/${id}`, 'include', 'PATCH', bodyData, {
+            await request(`/api/tasks/${id}`, 'include', 'PATCH', 'cors', bodyData, {
                 Authorization: `Bearer ${isAuth.token}`
             })
             

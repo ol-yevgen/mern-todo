@@ -20,7 +20,7 @@ export const TaskDetailPage: FC = () => {
         try {
             const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
             ) 
-            const fetched = await request(`/api/tasks/${taskId}`, 'include', 'GET', null, {
+            const fetched = await request(`/api/tasks/${taskId}`, 'include', 'GET', 'cors', null, {
                 Authorization: `Bearer ${isAuth.token}`
             })
             setTask(fetched)

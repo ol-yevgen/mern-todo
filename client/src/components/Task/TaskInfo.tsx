@@ -1,10 +1,8 @@
-import { Box, Divider, IconButton } from "@mui/material"
+import { Box, Divider } from "@mui/material"
 import { formateDate } from '../../utils/formateDate'
 import { useHttp } from "../../hooks/http.hook";
-import EditIcon from '@mui/icons-material/Edit';
-import { Spinner, DeleteButton, TaskActions } from "../index";
-import { FC, useContext } from "react";
-
+import { Spinner, TaskActions } from "../index";
+import { FC } from "react";
 
 interface TaskInfoTypes {
     create: string,
