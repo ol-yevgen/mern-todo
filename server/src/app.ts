@@ -10,11 +10,12 @@ import cors from 'cors'
 import 'dotenv/config'
 
 const PORT = process.env.PORT || 5050
+const BASE_FRONTEND_URL = process.env.BASE_FRONTEND_URL
 
 const app = express()
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: BASE_FRONTEND_URL,
     credentials: true
 }))
 app.use(cookieParser())
@@ -32,17 +33,3 @@ connectToBd()
 app.listen(PORT, () => {
     logger.info(`Server started at http://localhost:${PORT}`)
 })
-
-// import config from './utils/validateEnv.js'
-// import compression from 'compression'
-// import bodyParser from 'body-parser'
-// import cors from 'cors'
-
-// const PORT = config.PORT || 5050
-// app.use(cors({
-//     credentials: true
-// }))
-// app.use(compression())
-// app.use(cookieParser())
-// app.use(bodyParser.json())
-// app.use(express.urlencoded({ extended: true }))
