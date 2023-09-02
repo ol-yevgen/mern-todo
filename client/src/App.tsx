@@ -10,13 +10,13 @@ import { useAuth } from "./hooks/auth.hook"
 
 export const App: FC = () => {
     const { colorMode, theme } = useToggleColorMode()
-    const { loggedIn, login, authToken, logout, userId, ready } = useAuth()
+    const { loggedIn, login, name, authToken, logout, userId, ready } = useAuth()
 
     return (
          <ColorModeContext.Provider value={colorMode}>
             <ThemeProvider theme={theme}>
                 <AuthContext.Provider value={{
-                    login, logout, authToken, loggedIn, ready, userId
+                    login, logout, name, authToken, loggedIn, ready, userId
                 }}>
                     <MainLayout />
                 </AuthContext.Provider>

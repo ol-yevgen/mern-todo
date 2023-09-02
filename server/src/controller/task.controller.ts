@@ -46,8 +46,8 @@ export const createTask = async (req: UserIdRequest, res: CreateTaskBody, next:N
     try {
         const { title, text } = req.body
 
-        const titleExisted = await Task.findOne({ title })
-        const textExisted = await Task.findOne({ text })
+        const titleExisted = await Task.findOne({ title }).findOne({ owner: req.userId })
+        const textExisted = await Task.findOne({ text }).findOne({ owner: req.userId })
 
         if (!title) {
             throw createHttpError(400, 'Task must have a title')
@@ -93,7 +93,6 @@ export const updateTask: RequestHandler<UpdateTaskParams, unknown, UpdateTaskBod
     const { title, text, done } = req.body
     const titleExisted = await Task.findOne({ title })
     const textExisted = await Task.findOne({ text })
-    // const doneExisted = await Task.findByIdAndUpdate(taskId, {done: done})
     
     try {
         const task = await Task.findById(taskId).exec()
@@ -162,7 +161,7 @@ export const deleteTask: RequestHandler = async (req: Request, res: Response, ne
 
         await task.deleteOne()
 
-        res.status(204).json({ message: 'Task has been deleted' })
+        return res.status(201).json({ message: 'Task has been deleted' })
     } catch (error) {
         next(error)
     }

@@ -1,8 +1,14 @@
 import { RequestHandler } from 'express'
 import bcrypt from 'bcryptjs'
 // import { NextFunction, Request, Response, RequestHandler } from 'express'
+import Task from '../models/task.model.js'
 import User from '../models/user.model.js'
+import { NextFunction, Request, Response } from 'express-serve-static-core'
+
 // import logger from '../utils/logger.js'
+interface UserIdRequest extends Request {
+    userId?: string
+}
 
 interface RegisterUserBody {
     firstName?: string,
@@ -38,6 +44,32 @@ export const registration: RequestHandler<unknown, unknown, RegisterUserBody, un
         await newUser.save()
 
         res.status(201).json({ message: `User with name ${firstName} has been registered` })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const profile = async (req: UserIdRequest, res: Response, next: NextFunction) => {
+
+    try {
+        const _id = req.userId
+
+        const user = await User.findById({_id})
+        const tasksTotalByUser = await Task.find({ owner: _id })
+        const doneTotalByUser = await Task.find({ owner: _id }).find({done: true})
+        const inProgressTotalByUser = await Task.find({ owner: _id }).find({done: false})
+
+        if (!tasksTotalByUser) {
+            return res.status(409).json({ message: 'No any tasks' })
+        }
+
+        res.status(201).json(
+            {
+                userEmail: user?.email,
+                totalTasks: tasksTotalByUser.length,
+                doneTasks: doneTotalByUser.length,
+                inProgressTasks: inProgressTotalByUser.length
+            })
     } catch (error) {
         next(error)
     }

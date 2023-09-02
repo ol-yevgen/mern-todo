@@ -1,6 +1,6 @@
 import { Container, Typography, Paper } from '@mui/material';
 import { Input, SubmitButton } from "../components/index";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AuthContext } from '../context/AuthContext';
 import { AccountCircle } from '@mui/icons-material';
@@ -8,10 +8,10 @@ import { FC, FormEvent, useContext } from "react"
 import * as yup from 'yup';
 import { useHttp } from '../hooks/http.hook';
 
-interface IFormInputs {
-    email: string,
-    password: string
-}
+// interface IFormInputs {
+//     email: string,
+//     password: string
+// }
 
 const loginSchema = yup.object().shape({
     email: yup
@@ -57,11 +57,10 @@ export const LoginPage: FC = () => {
         try {
             const data = await request('/api/auth/login', 'include', 'POST', getValues())
 
-            const {loggedIn, token, userId} = data
-            
+            const { loggedIn, token, userId, userName } = data
             
             if (data) {
-                login(loggedIn, token, userId)
+                login(loggedIn, userName, token, userId)
 
                 reset();
             }

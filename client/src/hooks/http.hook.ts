@@ -25,7 +25,7 @@ export const useHttp = () => {
             }
 
             toast.success(data.message, {
-                position: toast.POSITION.TOP_RIGHT
+                position: toast.POSITION.BOTTOM_RIGHT
             });
 
             setLoading(false);
@@ -36,7 +36,7 @@ export const useHttp = () => {
             setLoading(false);
 
             toast.error(error.message, {
-                position: toast.POSITION.TOP_RIGHT
+                position: toast.POSITION.BOTTOM_RIGHT
             });
         }
     }, [BASE_URL]);

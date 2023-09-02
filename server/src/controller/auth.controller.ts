@@ -37,7 +37,7 @@ export const login = async (req: RegisterUserBody, res: Response, next: NextFunc
         const accessToken = jwt.sign(
             { userId: user._id },
             JWT_SECRET,
-            { expiresIn: '15m' }
+            { expiresIn: '1h' }
         )
 
         const refreshToken = jwt.sign(
@@ -50,7 +50,7 @@ export const login = async (req: RegisterUserBody, res: Response, next: NextFunc
         res.cookie('accessToken', accessToken, {
             httpOnly: true, //accessible only by web server 
             secure: true, //https
-            maxAge: 15 * 60 * 1000//cookie expiry: set to match rT
+            maxAge: 60 * 60 * 1000//cookie expiry: set to match rT
         })
             .cookie('refreshToken', refreshToken, {
                 httpOnly: true, //accessible only by web server 
@@ -58,17 +58,29 @@ export const login = async (req: RegisterUserBody, res: Response, next: NextFunc
                 maxAge: 7 * 24 * 60 * 60 * 1000 //cookie expiry: set to match rT
             })
             .status(201)
-            .json({ loggedIn: true, token: accessToken, userId: user._id, message: `Welcome, ${user.firstName}`})
+            .json(
+                {
+                    loggedIn: true,
+                    token: accessToken,
+                    userId: user._id,
+                    userName: user.firstName + ' ' + user.lastName,
+                    message: `Welcome, ${user.firstName}`
+                })
 
     } catch (error) {
         next(error)
     }
 }
 
-export const logout = (req: Request, res: Response) => {
-    const cookies = req.cookies
-    if (!cookies?.jwt) return res.sendStatus(204) //No content
-    res.clearCookie('accessToken', { httpOnly: true, secure: true })
-    res.clearCookie('refreshToken', { httpOnly: true, secure: true })
-    res.json({ message: 'Cookie cleared' })
+export const logout = (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const {name} = req.body
+        // const cookies = req.cookies
+        // if (!cookies?.accessToken) return res.sendStatus(204) //No content
+        res.clearCookie('accessToken', { httpOnly: true, secure: true })
+        res.clearCookie('refreshToken', { httpOnly: true, secure: true })
+        res.status(201).json({ message: `Bye, ${name.split(' ')[0]}!` })
+    } catch (error) {
+        next(error)
+    }
 }

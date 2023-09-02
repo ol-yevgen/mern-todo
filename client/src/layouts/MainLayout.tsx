@@ -4,7 +4,6 @@ import { AuthContext } from "../context/AuthContext"
 import { Box, Container } from "@mui/material"
 import { useRoutes } from "../utils/routes"
 import { FC, useContext } from "react"
-
 import { ToastContainer } from 'react-toastify';
 
 export const MainLayout: FC = () => {

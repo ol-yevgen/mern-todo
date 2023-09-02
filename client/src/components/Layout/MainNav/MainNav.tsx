@@ -2,13 +2,12 @@ import { ColorModeButton, Navigation, UserMenu } from '../../index'
 import { Box, IconButton, Avatar, Tooltip } from '@mui/material'
 import { AuthContext } from '../../../context/AuthContext';
 import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHttp } from '../../../hooks/http.hook';
 
 export const MainNav = () => {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-    let { loggedIn, logout } = useContext(AuthContext)
-
-    const navigate = useNavigate()
+    let { loggedIn, logout, name } = useContext(AuthContext)
+    const { request } = useHttp()
 
     const open = Boolean(anchorElUser);
     
@@ -20,9 +19,12 @@ export const MainNav = () => {
         setAnchorElUser(null);
     };
 
-    const logoutHandler = () => {
-        logout()
-        navigate('/')
+    const logoutHandler = async() => {
+        try {
+            await request('/api/auth/logout', 'include', 'POST', {name})
+            logout()
+
+        } catch (error) { }
     }
 
     return (
@@ -42,7 +44,9 @@ export const MainNav = () => {
                             aria-haspopup="true"
                             aria-expanded={open ? 'true' : undefined}
                         >
-                            <Avatar sx={{ width: 32, height: 32, bgcolor: 'text.primary', }}>Y</Avatar>
+                            <Avatar sx={{ width: 32, height: 32, bgcolor: 'text.primary', }}>
+                                {name?.charAt(0).toUpperCase()}
+                            </Avatar>
                         </IconButton>
                     </Tooltip>
                     : null

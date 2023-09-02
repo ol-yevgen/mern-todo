@@ -27,6 +27,7 @@ interface UserMenuType {
 export const UserMenu: FC<UserMenuType> = ({ handleClose, anchorElUser, logoutHandler }) => {
     const open = Boolean(anchorElUser);
 
+
     return (
         <Menu
             anchorEl={anchorElUser}
@@ -68,7 +69,7 @@ export const UserMenu: FC<UserMenuType> = ({ handleClose, anchorElUser, logoutHa
                 return (
                     <Box key={index}>
                         <Link to={`/${item.title.toLowerCase()}`}>
-                            <MenuItem onClick={item.title === 'Logout' ? logoutHandler :handleClose} sx={{ color: 'text.primary', }} >
+                            <MenuItem onClick={item.title === 'Logout' ? logoutHandler : handleClose} sx={{ color: 'text.primary', }} >
                                 <ListItemIcon>
                                     {item.icon}
 
