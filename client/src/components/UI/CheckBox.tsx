@@ -16,7 +16,7 @@ export const CheckBox: FC<CheckBoxType> = ({ checked, setChecked, id }) => {
         try {
             const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
             ) 
-            await request(`/api/tasks/${id}`, 'include', 'PATCH', { done: !checked }, {
+            await request(`/api/tasks/${id}`, 'include', 'PATCH', 'cors',{ done: !checked }, {
                 Authorization: `Bearer ${isAuth.token}`
             })
 
