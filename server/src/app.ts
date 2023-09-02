@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import router from './routes/routes.js';
 import logger from './utils/logger.js';
 import morgan from 'morgan';
-// import cors from 'cors'
+import cors from 'cors'
 import 'dotenv/config'
 
 const PORT = process.env.PORT || 5050
@@ -16,6 +16,8 @@ const PORT = process.env.PORT || 5050
 const app = express()
 
 // logger.info(BASE_FRONTEND_URL1)
+
+app.use(cors())
 
 // app.use(cors({
 //     origin: [BASE_FRONTEND_URL1, BASE_FRONTEND_URL2],
