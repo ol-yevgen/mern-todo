@@ -9,7 +9,6 @@ export const useAuth = () => {
     const [ready, setReady] = useState<boolean>(false)
     const [userId, setUserId] = useState<string | null>(null)
 
-
     const login = useCallback((loggedIn: boolean, name: string, token: string, id: string) => {
 
         setAuthToken(token)
