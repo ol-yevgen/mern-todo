@@ -17,7 +17,7 @@ export const useHttp = () => {
             }
             const TODO_API = BASE_URL + url
 
-            const response = await fetch(TODO_API, { credentials, method, mode,body, headers })
+            const response = await fetch(TODO_API, { method, mode, body, credentials, headers })
             const data = await response.json()
             
             if (!response.ok) {
