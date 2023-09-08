@@ -69,7 +69,7 @@ export const RegistrationPage: FC = () => {
         event.preventDefault()
 
         try {
-            const data = await request('/api/user/registration', 'POST', 'cors', getValues(), {
+            const data = await request('/api/user/registration', 'POST', getValues(), {
                 // Authorization: `Bearer ${auth.token}`
             })
 

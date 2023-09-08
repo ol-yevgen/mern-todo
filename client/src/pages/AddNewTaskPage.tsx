@@ -54,7 +54,7 @@ export const AddNewTaskPage: FC = () => {
         try {
             const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
             ) 
-            await request('/api/tasks', 'POST', 'cors', formattedData,  {
+            await request('/api/tasks', 'POST', formattedData,  {
                 Authorization: `Bearer ${isAuth.token}`
             })
             navigate('/tasks')

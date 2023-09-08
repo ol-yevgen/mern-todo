@@ -20,7 +20,7 @@ export const ProfilePage: FC = () => {
         try {
             const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
             )
-            const fetchedUser = await request(`/api/user/${userId}`, 'GET', 'cors', null, {
+            const fetchedUser = await request(`/api/user/${userId}`, 'GET', null, {
                 Authorization: `Bearer ${isAuth.token}`
             })
             setUser(fetchedUser)

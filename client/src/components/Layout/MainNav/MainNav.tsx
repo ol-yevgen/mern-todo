@@ -21,7 +21,7 @@ export const MainNav = () => {
 
     const logoutHandler = async() => {
         try {
-            await request('/api/auth/logout','POST', 'cors', {name})
+            await request('/api/auth/logout','POST', {name})
             logout()
 
         } catch (error) { }
