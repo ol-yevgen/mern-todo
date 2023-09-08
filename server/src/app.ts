@@ -10,19 +10,19 @@ import cors from 'cors'
 import 'dotenv/config'
 
 const PORT = process.env.PORT || 5050
-const BASE_FRONTEND_URL1 = process.env.BASE_FRONTEND_URL1 as string
-const BASE_FRONTEND_URL2 = process.env.BASE_FRONTEND_URL2 as string
+// const BASE_FRONTEND_URL1 = process.env.BASE_FRONTEND_URL1 as string
+// const BASE_FRONTEND_URL2 = process.env.BASE_FRONTEND_URL2 as string
 
 const app = express()
 
 // logger.info(BASE_FRONTEND_URL1)
 
-// app.use(cors())
+app.use(cors())
 
-app.use(cors({
-    origin: [BASE_FRONTEND_URL1, BASE_FRONTEND_URL2],
-    credentials: true
-}))
+// app.use(cors({
+//     origin: [BASE_FRONTEND_URL1, BASE_FRONTEND_URL2],
+//     credentials: true
+// }))
 // app.use((req: Request, res: Response, next: NextFunction) => {
 //     res.setHeader('Access-Control-Allow-Origin', BASE_FRONTEND_URL1);
 //     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
