@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import router from './routes/routes.js';
 import logger from './utils/logger.js';
 import morgan from 'morgan';
+import bodyParser from 'body-parser';
 import cors from 'cors'
 import 'dotenv/config'
 
@@ -29,6 +30,7 @@ app.use(cors({
 //     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 //     next();
 // });
+app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(morgan('dev'))
 app.use(express.json())
