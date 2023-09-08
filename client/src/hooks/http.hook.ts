@@ -7,7 +7,7 @@ export const useHttp = () => {
 
     const BASE_URL = process.env.REACT_APP_BASE_URL as string;
 
-    const request = useCallback(async (url: string, credentials: RequestCredentials = 'include', method: string = 'GET', mode: RequestMode = 'cors', body: any = null, headers: Record<string, string> = {}) => {
+    const request = useCallback(async (url: string, method: string = 'GET', mode: RequestMode = 'cors', body: any = null, headers: Record<string, string> = {}, credentials: RequestCredentials = 'include') => {
         setLoading(true);
 
         try {

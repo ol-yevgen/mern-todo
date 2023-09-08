@@ -17,7 +17,7 @@ export const DeleteButton = ({ id, }: DeleteButtonTypes) => {
         try {
             const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
             ) 
-            await request(`/api/tasks/${id}`, 'include', 'DELETE', 'cors', null, {
+            await request(`/api/tasks/${id}`, 'DELETE', 'cors', null, {
                 Authorization: `Bearer ${isAuth.token}`
             })
 
