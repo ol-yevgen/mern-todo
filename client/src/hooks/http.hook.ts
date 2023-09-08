@@ -7,7 +7,7 @@ export const useHttp = () => {
 
     const BASE_URL = process.env.REACT_APP_BASE_URL as string;
 
-    const request = useCallback(async (url: string, method: string = 'GET', mode: RequestMode = 'cors', body: any = null, headers: Record<string, string> = {}, credentials: RequestCredentials = 'include') => {
+    const request = useCallback(async (url: string, method: string = 'GET', mode: RequestMode = 'cors', body: any = null, headers: Record<string, string> = {}) => {
         setLoading(true);
 
         try {
@@ -17,7 +17,7 @@ export const useHttp = () => {
             }
             const TODO_API = BASE_URL + url
 
-            const response = await fetch(TODO_API, { method, mode, body, credentials, headers })
+            const response = await fetch(TODO_API, { method, mode, body, headers })
             const data = await response.json()
             
             if (!response.ok) {
