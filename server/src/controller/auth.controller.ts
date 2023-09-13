@@ -94,8 +94,8 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
     try {
         const cookies = req.cookies
 
-        if (!cookies?.refreshToken) return res.status(401).json({message: 'Refresh not found'})
-
+        if (!cookies?.refreshToken) return res.status(401)
+        
         const refreshToken = cookies.refreshToken
 
         const { userId } = <jwt.UserIDJwtPayload>jwt.verify(refreshToken, REFRESH_TOKEN_SECRET)
