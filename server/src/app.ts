@@ -18,10 +18,6 @@ const BASE_FRONTEND_URL =
 
 const app = express()
 
-// logger.info(BASE_FRONTEND_URL1)
-
-// app.use(cors())
-
 app.use(cors({
     origin: BASE_FRONTEND_URL,
     credentials: true

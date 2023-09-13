@@ -1,5 +1,5 @@
 import { Container, Typography, Paper } from '@mui/material';
-import { Input, SubmitButton } from "../components/index";
+import { Input, SubmitButton, Spinner } from "../components/index";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AuthContext } from '../context/AuthContext';
@@ -24,7 +24,7 @@ const loginSchema = yup.object().shape({
 
 export const LoginPage: FC = () => {
     const { login } = useContext(AuthContext)
-    const { request } = useHttp()
+    const { request, loading } = useHttp()
 
     const {
         register,
@@ -86,11 +86,13 @@ export const LoginPage: FC = () => {
                         register={register}
                     />
 
-                    <SubmitButton
+                    {loading
+                    ? <Spinner/>
+                    : <SubmitButton
                         label='Sign In'
                         onHandleSubmit={onHandleSubmit}
                         isValid={isValid}
-                    />
+                    />}
                 </form>
             </Paper>
         </Container>
