@@ -14,7 +14,7 @@ interface MyRequest extends Request {
 }
 
 const jwtVerify = (req: MyRequest, res: Response, next: NextFunction) => {
-    const JWT_SECRET = process.env.JWT_SECRET as string;
+    const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET as string;
 
     const authHeader = req.headers.authorization || req.headers.Authorization as string
     // const cookiesToken: string = req.cookies.accessToken
@@ -28,7 +28,7 @@ const jwtVerify = (req: MyRequest, res: Response, next: NextFunction) => {
 
     const token = authHeader.split(' ')[1];
 
-    const { userId } = <jwt.UserIDJwtPayload>jwt.verify(token, JWT_SECRET);
+    const { userId } = <jwt.UserIDJwtPayload>jwt.verify(token, ACCESS_TOKEN_SECRET);
     
     req.userId = userId
     next()

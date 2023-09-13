@@ -11,8 +11,8 @@ import cors from 'cors'
 import 'dotenv/config'
 
 const PORT = process.env.PORT || 5050
-const BASE_FRONTEND_URL1 = process.env.BASE_FRONTEND_URL1 as string
-const BASE_FRONTEND_URL2 = process.env.BASE_FRONTEND_URL2 as string
+const BASE_FRONTEND_URL = process.env.BASE_FRONTEND_URL as string
+
 
 const app = express()
 
@@ -21,7 +21,7 @@ const app = express()
 // app.use(cors())
 
 app.use(cors({
-    origin: [BASE_FRONTEND_URL1, BASE_FRONTEND_URL2],
+    origin: BASE_FRONTEND_URL,
     credentials: true
 }))
 // app.use((req: Request, res: Response, next: NextFunction) => {

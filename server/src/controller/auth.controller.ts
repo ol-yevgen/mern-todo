@@ -13,11 +13,12 @@ interface RegisterUserBody extends Request {
     password?: string,
 }
 
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET as string
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET as string
+
 export const login = async (req: RegisterUserBody, res: Response, next: NextFunction) => {
 
     try {
-        const JWT_SECRET = process.env.JWT_SECRET as string
-
         const { email, password } = req.body
 
         if (!email || !password) {
@@ -36,13 +37,13 @@ export const login = async (req: RegisterUserBody, res: Response, next: NextFunc
 
         const accessToken = jwt.sign(
             { userId: user._id },
-            JWT_SECRET,
+            ACCESS_TOKEN_SECRET,
             { expiresIn: '1h' }
         )
 
         const refreshToken = jwt.sign(
             { userId: user._id },
-            JWT_SECRET,
+            REFRESH_TOKEN_SECRET,
             { expiresIn: '7d' }
         )
 
@@ -83,4 +84,35 @@ export const logout = (req: Request, res: Response, next: NextFunction) => {
     } catch (error) {
         next(error)
     }
+}
+
+export const refresh = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const cookies = req.cookies
+
+        if (!cookies?.refreshToken) return res.status(401)
+
+        const refreshToken = cookies.refreshToken
+
+        const { userId } = <jwt.UserIDJwtPayload>jwt.verify(refreshToken, REFRESH_TOKEN_SECRET)
+        
+        if (!userId) return res.status(403).json({ message: 'Forbidden' })
+
+        const foundUser = await User.findById(userId).exec()
+
+        if (!foundUser) return res.status(401).json({ message: 'Unauthorized' })
+
+        const accessToken = jwt.sign(
+            { userId: userId },
+            ACCESS_TOKEN_SECRET,
+            { expiresIn: '10m' }
+        )
+
+        res.json({ accessToken })
+
+
+    } catch (error) {
+        next(error)
+    }
+
 }
