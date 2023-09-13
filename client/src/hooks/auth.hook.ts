@@ -17,8 +17,11 @@ export const useAuth = () => {
     }, [])
 
     const persistentLogin = useCallback((accessToken: string) => {
+        // if (!!accessToken) {
+        //     const storageData: StorageDataTypes = JSON.parse(localStorage.getItem(storageAuth) as string)
+        //     setAuth({ userName: storageData.userName, accessToken: accessToken, userId: storageData.userId })
+        // }
         const storageData: StorageDataTypes = JSON.parse(localStorage.getItem(storageAuth) as string)
-        
         setAuth({ userName: storageData.userName, accessToken: accessToken, userId: storageData.userId })
     }, [])
     

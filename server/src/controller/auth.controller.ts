@@ -4,6 +4,7 @@ import createHttpError from 'http-errors'
 import jwt from 'jsonwebtoken';
 import 'dotenv/config'
 import bcrypt from 'bcryptjs';
+import logger from '../utils/logger.js';
 // import logger from '../utils/logger.js';
 
 interface RegisterUserBody extends Request {
@@ -109,6 +110,7 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
 
 
     } catch (error) {
+        logger.info(error)
         next(error)
     }
 
