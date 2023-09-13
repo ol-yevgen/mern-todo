@@ -1,8 +1,9 @@
 import { ColorModeContext } from '../../context/ColorModeContext'
-import Brightness4Icon from '@mui/icons-material/Brightness4'
-import Brightness7Icon from '@mui/icons-material/Brightness7'
 import { useTheme, Box, IconButton } from '@mui/material';
 import { FC, useContext } from 'react';
+
+import Brightness4Icon from '@mui/icons-material/Brightness4'
+import Brightness7Icon from '@mui/icons-material/Brightness7'
 
 export const ColorModeButton: FC = () => {
     const theme = useTheme();

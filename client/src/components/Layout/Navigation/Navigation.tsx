@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom'
 import { Button } from '@mui/material'
 import { AuthContext } from '../../../context/AuthContext';
@@ -28,22 +28,25 @@ interface NavigationType {
     handleCloseNavMenu: () => void,
 }
 
-export const Navigation: FC<NavigationType> = ({ handleCloseNavMenu }) => {
-    const { loggedIn } = useContext(AuthContext)
-    const nav = loggedIn ? authNav : notAuthNav
+export const Navigation = ({ handleCloseNavMenu }: NavigationType) => {
+    const { auth } = useContext(AuthContext)
+    const accessToken = auth?.accessToken
+    const nav = !!accessToken ? authNav : notAuthNav
 
     return (
         <>
-            {nav.map((page) => (
-                <Link key = { page.title } to={page.route}>
-                    <Button
-                        onClick={handleCloseNavMenu}
-                        sx={{ width: '110px',my: 1, px: 2, color: "text.primary", display: 'block' }}
-                    >
-                        {page.title}
-                    </Button>
-                </Link>
-            ))}
+            {
+                nav.map((page) => (
+                    <Link key={page.title} to={page.route}>
+                        <Button
+                            onClick={handleCloseNavMenu}
+                            sx={{ width: '110px', my: 1, px: 2, color: "text.primary", display: 'block' }}
+                        >
+                            {page.title}
+                        </Button>
+                    </Link>
+                ))}
         </>
+        
     );
 }

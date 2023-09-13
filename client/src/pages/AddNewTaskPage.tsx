@@ -3,7 +3,7 @@ import { Input, SubmitButton } from "../components/index";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AuthContext } from '../context/AuthContext';
-import { FC, FormEvent } from "react"
+import { FC, FormEvent, useContext } from "react"
 import * as yup from 'yup';
 import { useHttp } from '../hooks/http.hook';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +21,8 @@ const loginSchema = yup.object().shape({
 
 export const AddNewTaskPage: FC = () => {
     const navigate = useNavigate()
-    const { request} = useHttp()
+    const { request } = useHttp()
+    const { auth } = useContext(AuthContext)
 
     const {
         register,
@@ -52,10 +53,9 @@ export const AddNewTaskPage: FC = () => {
         }
         
         try {
-            const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
-            ) 
+
             await request('/api/tasks', 'POST', formattedData,  {
-                Authorization: `Bearer ${isAuth.token}`
+                Authorization: `Bearer ${auth?.accessToken}`
             })
             navigate('/tasks')
             reset();

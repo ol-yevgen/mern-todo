@@ -48,25 +48,20 @@ export const login = async (req: RegisterUserBody, res: Response, next: NextFunc
         )
 
         // Create secure cookie with refresh token 
-        res.cookie('accessToken', accessToken, {
+        res.cookie('refreshToken', refreshToken, {
             httpOnly: true, //accessible only by web server 
             secure: true, //https
-            maxAge: 60 * 60 * 1000//cookie expiry: set to match rT
+            maxAge: 7 * 24 * 60 * 60 * 1000 //cookie expiry: set to match rT
         })
-            .cookie('refreshToken', refreshToken, {
-                httpOnly: true, //accessible only by web server 
-                secure: true, //https
-                maxAge: 7 * 24 * 60 * 60 * 1000 //cookie expiry: set to match rT
-            })
             .status(201)
             .json(
                 {
-                    loggedIn: true,
-                    token: accessToken,
+                    accessToken,
                     userId: user._id,
                     userName: user.firstName + ' ' + user.lastName,
                     message: `Welcome, ${user.firstName}`
                 })
+            
 
     } catch (error) {
         next(error)
@@ -75,12 +70,14 @@ export const login = async (req: RegisterUserBody, res: Response, next: NextFunc
 
 export const logout = (req: Request, res: Response, next: NextFunction) => {
     try {
-        const {name} = req.body
-        // const cookies = req.cookies
-        // if (!cookies?.accessToken) return res.sendStatus(204) //No content
-        res.clearCookie('accessToken', { httpOnly: true, secure: true })
-        res.clearCookie('refreshToken', { httpOnly: true, secure: true })
-        res.status(201).json({ message: `Bye, ${name.split(' ')[0]}!` })
+        const { userName } = req.body
+        const cookies = req.cookies
+
+        if (!cookies?.refreshToken) return res.sendStatus(204) //No content
+
+        res.clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: true })
+        res.status(201).json({ loggedIn: false, message: `Bye, ${userName.split(' ')[0]}!` })
+
     } catch (error) {
         next(error)
     }

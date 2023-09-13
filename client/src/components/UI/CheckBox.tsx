@@ -1,6 +1,7 @@
 import { Checkbox } from '@mui/material';
-import { FC, useCallback } from 'react';
+import { FC, useCallback, useContext } from 'react';
 import { useHttp } from "../../hooks/http.hook"
+import { AuthContext } from '../../context/AuthContext';
 
 interface CheckBoxType {
     checked: boolean,
@@ -10,18 +11,17 @@ interface CheckBoxType {
 
 export const CheckBox: FC<CheckBoxType> = ({ checked, setChecked, id }) => {
 
+    const { auth } = useContext(AuthContext)
     const { request } = useHttp()
 
     const doneTask = useCallback(async () => {
         try {
-            const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
-            ) 
             await request(`/api/tasks/${id}`, 'PATCH', { done: !checked }, {
-                Authorization: `Bearer ${isAuth.token}`
+                Authorization: `Bearer ${auth?.accessToken}`
             })
 
         } catch (error) { }
-    }, [request, id, checked])
+    }, [request, id, checked, auth?.accessToken])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setChecked(event.target.checked);

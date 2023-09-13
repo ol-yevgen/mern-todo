@@ -1,5 +1,5 @@
 import { Container, Typography, Paper } from '@mui/material';
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AccountCircle } from '@mui/icons-material';
 import { Input, SubmitButton } from "../components";
@@ -8,12 +8,12 @@ import * as yup from 'yup';
 import { FC, FormEvent } from "react"
 import { useHttp } from '../hooks/http.hook';
 
-interface IFormInputs {
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string
-}
+// interface IFormInputs {
+//     firstName: string,
+//     lastName: string,
+//     email: string,
+//     password: string
+// }
 
 const registrationSchema = yup.object().shape({
     firstName: yup
@@ -50,7 +50,6 @@ export const RegistrationPage: FC = () => {
             errors,
             isValid,
         },
-        // handleSubmit,
         reset
     } = useForm(
         {

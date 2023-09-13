@@ -14,21 +14,18 @@ interface UserInfo {
 export const ProfilePage: FC = () => {
     const { request, loading } = useHttp()
     const [user, setUser] = useState<UserInfo | null>(null);
-    const { userId, name } = useContext(AuthContext)
+    const { auth } = useContext(AuthContext)
 
     const getProfileInfo = useCallback(async () => {
         try {
-            const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
-            )
-            const fetchedUser = await request(`/api/user/${userId}`, 'GET', null, {
-                Authorization: `Bearer ${isAuth.token}`
+            const fetchedUser = await request(`/api/user/${auth?.userId}`, 'GET', null, {
+                Authorization: `Bearer ${auth?.accessToken}`
             })
             setUser(fetchedUser)
-            console.log(fetchedUser);
             
         } catch (error) { }
 
-    }, [request, userId])
+    }, [request, auth?.accessToken, auth?.userId])
 
     useEffect(() => {
         getProfileInfo()
@@ -44,7 +41,7 @@ export const ProfilePage: FC = () => {
                 <Typography component="h1" variant="h5" sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'center' }}>
                     Full name:
                     <Box component='span' sx={{ ml: '10px', fontWeight: 'bold', }}>
-                        {name}
+                        {auth?.userName}
                     </Box>
                 </Typography>
                 <Typography component="h2" variant="h5" sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'center', mt: '10px' }}>

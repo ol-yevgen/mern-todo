@@ -10,8 +10,8 @@ interface LogoTypes {
 }
 
 export const Logo: FC<LogoTypes> = ({ variant, xs, md }) => {
-    const { loggedIn } = useContext(AuthContext)
-    const nav = loggedIn ? '/tasks' : '/'
+    const { auth } = useContext(AuthContext)
+    const nav = auth?.accessToken ? '/tasks' : '/'
 
     return (
         <Link to={nav}>

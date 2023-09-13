@@ -1,26 +1,18 @@
 import { FC } from "react"
-import { AuthContext } from './context/AuthContext'
+import { AuthProvider } from './context/AuthContext'
 import { MainLayout } from './layouts/MainLayout'
-import { useToggleColorMode } from './utils/toggleColorMode'
-import { ColorModeContext } from './context/ColorModeContext'
-import { ThemeProvider } from '@mui/material/styles';
-
-
-import { useAuth } from "./hooks/auth.hook"
+import { ColorModeProvider } from './context/ColorModeContext'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 export const App: FC = () => {
-    const { colorMode, theme } = useToggleColorMode()
-    const { loggedIn, login, name, authToken, logout, userId, ready } = useAuth()
 
     return (
-         <ColorModeContext.Provider value={colorMode}>
-            <ThemeProvider theme={theme}>
-                <AuthContext.Provider value={{
-                    login, logout, name, authToken, loggedIn, ready, userId
-                }}>
+        <ColorModeProvider>
+            <AuthProvider>
+                <Router>
                     <MainLayout />
-                </AuthContext.Provider>
-            </ThemeProvider>
-        </ColorModeContext.Provider>
+                </Router>
+            </AuthProvider>
+        </ColorModeProvider>
     )
 }

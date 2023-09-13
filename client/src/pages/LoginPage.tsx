@@ -8,11 +8,6 @@ import { FC, FormEvent, useContext } from "react"
 import * as yup from 'yup';
 import { useHttp } from '../hooks/http.hook';
 
-// interface IFormInputs {
-//     email: string,
-//     password: string
-// }
-
 const loginSchema = yup.object().shape({
     email: yup
         .string()
@@ -28,7 +23,7 @@ const loginSchema = yup.object().shape({
 })
 
 export const LoginPage: FC = () => {
-    let { login, userId } = useContext(AuthContext)
+    const { login } = useContext(AuthContext)
     const { request } = useHttp()
 
     const {
@@ -38,7 +33,6 @@ export const LoginPage: FC = () => {
             errors,
             isValid,
         },
-        // handleSubmit,
         reset
     } = useForm(
         {
@@ -57,10 +51,10 @@ export const LoginPage: FC = () => {
         try {
             const data = await request('/api/auth/login', 'POST', getValues())
 
-            const { loggedIn, token, userId, userName } = data
+            const { userName, accessToken, userId } = data
             
             if (data) {
-                login(loggedIn, userName, token, userId)
+                login({ userName, accessToken, userId })
 
                 reset();
             }

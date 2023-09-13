@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response, RequestHandler } from 'express'
 import Task from '../models/task.model.js'
-import createHttpError from 'http-errors'
 import mongoose from 'mongoose' 
+// import createHttpError from 'http-errors'
 // import logger from '../utils/logger.js'
 interface UserIdRequest extends Request {
     userId?: string
@@ -21,13 +21,17 @@ export const getTask: RequestHandler = async (req: Request, res: Response, next:
 
     try {
         if (!mongoose.isValidObjectId(taskId)) {
-            throw createHttpError(400, 'Invalid task id')
+            return res.status(400).json({ message: 'Invalid task id' })
+
+            // throw createHttpError(400, 'Invalid task id')
         }
 
         const task = await Task.findById(taskId).exec()
 
         if (!task) {
-            throw createHttpError(404, 'Task not found')
+            return res.status(404).json({ message: 'Task not found' })
+
+            // throw createHttpError(404, 'Task not found')
         }
 
         res.status(200).json(task)
@@ -50,18 +54,26 @@ export const createTask = async (req: UserIdRequest, res: CreateTaskBody, next:N
         const textExisted = await Task.findOne({ text }).findOne({ owner: req.userId })
 
         if (!title) {
-            throw createHttpError(400, 'Task must have a title')
+            return res.status(400).json({ message: 'Task must have a title' })
+
+            // throw createHttpError(400, 'Task must have a title')
         }
         if (!text) {
-            throw createHttpError(400, 'Task must have a text')
+            return res.status(400).json({ message: 'Task must have a text' })
+
+            // throw createHttpError(400, 'Task must have a text')
         }
 
         if (titleExisted) {
-            throw createHttpError(400, 'Task with same title already exist')
+            return res.status(400).json({ message: 'Task with same title already exist' })
+
+            // throw createHttpError(400, 'Task with same title already exist')
         }
 
         if (textExisted) {
-            throw createHttpError(400, 'Task with same text already exist')
+            return res.status(400).json({ message: 'Task with same text already exist' })
+
+            // throw createHttpError(400, 'Task with same text already exist')
         }
 
         const newTask = new Task({
@@ -98,29 +110,39 @@ export const updateTask: RequestHandler<UpdateTaskParams, unknown, UpdateTaskBod
         const task = await Task.findById(taskId).exec()
 
         if (!task) {
-            throw createHttpError(404, 'Task not found')
+            return res.status(400).json({ message: 'Task not found' })
+
+            // throw createHttpError(404, 'Task not found')
         }
 
         if (!mongoose.isValidObjectId(taskId)) {
-            throw createHttpError(400, 'Invalid task id')
+            return res.status(400).json({ message: 'Invalid task id' })
+            // throw createHttpError(400, 'Invalid task id')
         }
 
         if (task.done === done) {
             
             if (!title) {
-                throw createHttpError(400, 'Task must have a title')
+                return res.status(400).json({ message: 'Task must have a title' })
+
+                // throw createHttpError(400, 'Task must have a title')
             }
 
             if (!text) {
-                throw createHttpError(400, 'Task must have a text')
+                return res.status(400).json({ message: 'Task must have a text' })
+
+                // throw createHttpError(400, 'Task must have a text')
             }
 
             if (titleExisted && (titleExisted.id !== taskId) ) {
-                throw createHttpError(400, 'Task with same title already exist')
+                return res.status(400).json({ message: 'Task with same title already exist' })
+                // throw createHttpError(400, 'Task with same title already exist')
             }
 
             if (textExisted && (textExisted.id !== taskId)) {
-                throw createHttpError(400, 'Task with same text already exist')
+                return res.status(400).json({ message: 'Task with same text already exist' })
+
+                // throw createHttpError(400, 'Task with same text already exist')
             }
 
             task.title = title
@@ -149,14 +171,18 @@ export const deleteTask: RequestHandler = async (req: Request, res: Response, ne
     try {
 
         if (!mongoose.isValidObjectId(taskId)) {
-            throw createHttpError(400, 'Invalid task id')
+            return res.status(404).json({ message: 'Invalid task id' })
+
+            // throw createHttpError(400, 'Invalid task id')
         }
 
         const task = await Task.findById(taskId).exec()
 
 
         if (!task) {
-            throw createHttpError(404, 'Task not found')
+            return res.status(404).json({ message: 'Task not found' })
+
+            // throw createHttpError(404, 'Task not found')
         }
 
         await task.deleteOne()

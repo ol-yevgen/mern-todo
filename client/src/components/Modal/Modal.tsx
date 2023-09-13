@@ -44,6 +44,7 @@ interface TransitionsModalTypes {
 export const TransitionsModal: FC<TransitionsModalTypes> = ({ id, checked, getTask, title, text }) => {
     const { modalAddTask, setModalAddTask} = useContext(ModalContext)
     const handleClose = () => setModalAddTask(false);
+    const { auth } = useContext(AuthContext)
 
     const { request } = useHttp()
 
@@ -70,7 +71,6 @@ export const TransitionsModal: FC<TransitionsModalTypes> = ({ id, checked, getTa
     const onHandleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
-
         try {
             const formattedData = {
                 title: getValues().title.toLowerCase(),
@@ -79,11 +79,8 @@ export const TransitionsModal: FC<TransitionsModalTypes> = ({ id, checked, getTa
             const checkedStatus = { done: checked }
             const bodyData = Object.assign(formattedData, checkedStatus)
 
-            const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
-            ) 
-
             await request(`/api/tasks/${id}`, 'PATCH', bodyData, {
-                Authorization: `Bearer ${isAuth.token}`
+                Authorization: `Bearer ${auth?.accessToken}`
             })
             
             handleClose()

@@ -1,56 +1,56 @@
 import { useCallback, useState, useEffect } from "react"
+import { useHttp } from "./http.hook"
+import { AuthTypes, StorageDataTypes, ReqTokenType } from "../types/types"
 
 const storageAuth = 'isAuth'
 
 export const useAuth = () => {
-    const [loggedIn, setLoggedIn] = useState<boolean>(false)
-    const [authToken, setAuthToken] = useState<string | null>(null)
-    const [name, setName] = useState<string | null>(null)
-    const [ready, setReady] = useState<boolean>(false)
-    const [userId, setUserId] = useState<string | null>(null)
 
-    const login = useCallback((loggedIn: boolean, name: string, token: string, id: string) => {
+    const { request } = useHttp()
+    const [auth, setAuth] = useState<AuthTypes | null>(null)
+    // const [auth, setAuth] = useState<AuthTypes>({userName: null, accessToken: null})
 
-        setAuthToken(token)
-        setLoggedIn(loggedIn)
-        setName(name)
-        setUserId(id)
-        localStorage.setItem(storageAuth, JSON.stringify({ loggedIn: loggedIn, token: token, userId: id, userName: name }))
+    const login = useCallback((authData: AuthTypes) => {
+        setAuth(authData)
+        localStorage.setItem(storageAuth, JSON.stringify({ userName: authData.userName, userId: authData.userId }))
 
+    }, [])
+
+    const persistentLogin = useCallback((accessToken: string) => {
+        if (!!accessToken) {
+            const storageData: StorageDataTypes = JSON.parse(localStorage.getItem(storageAuth) as string) 
+            setAuth({ userName: storageData.userName, accessToken: accessToken, userId: storageData.userId })
+        }
     }, [])
     
     const logout = useCallback(() => {
-        setLoggedIn(false)
-        setUserId(null)
+        setAuth(null)
         localStorage.removeItem(storageAuth)
     }, [])
 
     useEffect(() => {
-        const data = JSON.parse(localStorage.getItem(storageAuth) as string
-        ) 
-        if (data) {
-            const { loggedIn, token, userId, userName } = data
+        if (!!auth?.accessToken) {
+            const interval = setTimeout(async () => {
+                try {
+                    const data: ReqTokenType = await request('/api/auth/refresh', 'POST')
 
-            login(loggedIn, userName, token, userId)
-            setName(userName)
-            setAuthToken(token)
-            setLoggedIn(loggedIn)
-            setUserId(userId)
+                    if (!data) {
+                        logout()
+                    }
+
+                    setAuth({ ...auth, accessToken: data.accessToken })
+
+                } catch (error) { }
+
+            }, 10 * 60 * 1000)
+
+            return () => {
+                clearTimeout(interval)
+            }
         }
-
-        setReady(true)
-    }, [login])
-
-    useEffect(() => {
-        const sessionTimeOut = setTimeout(() => {
-            logout()
-        },  59 * 60 * 1000)
-
-        return () => clearTimeout(sessionTimeOut)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [auth, request])
     
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-    
-    return { login, logout, name, authToken, loggedIn, userId, ready}
+    return { login, logout, auth, persistentLogin}
 
 }

@@ -1,5 +1,5 @@
 import { Card, Typography, Box } from '@mui/material';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useContext, useEffect, useState } from 'react';
 import { CheckBox, TaskTitle, TaskInfo, Spinner } from '../components/index'
 import { TaskType as TaskModel } from '../types/types';
 import { useParams } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { useHttp } from '../hooks/http.hook';
 import { ModalContext } from '../context/ModalContext'
 import { TransitionsModal } from '../components/Modal/Modal'
 import { capitalizeFirstWord } from '../utils/capitalizeFirstWord';
+import { AuthContext } from '../context/AuthContext';
 
 export const TaskDetailPage: FC = () => {
     const [task, setTask] = useState<TaskModel>();
@@ -15,20 +16,19 @@ export const TaskDetailPage: FC = () => {
 
     const { request, loading } = useHttp()
     const taskId = useParams().id as string
+    const { auth } = useContext(AuthContext)
 
     const getTask = useCallback(async () => {
         try {
-            const isAuth = JSON.parse(localStorage.getItem('isAuth') as string
-            ) 
             const fetched = await request(`/api/tasks/${taskId}`, 'GET', null, {
-                Authorization: `Bearer ${isAuth.token}`
+                Authorization: `Bearer ${auth?.accessToken}`
             })
             setTask(fetched)
             setChecked(fetched.done)
 
         } catch (error) {}
 
-    }, [taskId, request])
+    }, [taskId, request, auth?.accessToken])
 
     useEffect(() => {
         getTask()

@@ -6,8 +6,10 @@ import { useHttp } from '../../../hooks/http.hook';
 
 export const MainNav = () => {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-    let { loggedIn, logout, name } = useContext(AuthContext)
+    const { auth, logout } = useContext(AuthContext)
     const { request } = useHttp()
+    const userName  = auth?.userName
+    const accessToken  = auth?.accessToken
 
     const open = Boolean(anchorElUser);
     
@@ -21,7 +23,7 @@ export const MainNav = () => {
 
     const logoutHandler = async() => {
         try {
-            await request('/api/auth/logout','POST', {name})
+            await request('/api/auth/logout', 'POST', { userName })
             logout()
 
         } catch (error) { }
@@ -34,7 +36,7 @@ export const MainNav = () => {
                     <Navigation handleCloseNavMenu={handleClose} />
                     <ColorModeButton />
                 </Box>
-                {loggedIn
+                {!!accessToken
                     ? <Tooltip title="Account settings">
                         <IconButton
                             onClick={handleClick}
@@ -45,7 +47,7 @@ export const MainNav = () => {
                             aria-expanded={open ? 'true' : undefined}
                         >
                             <Avatar sx={{ width: 32, height: 32, bgcolor: 'text.primary', }}>
-                                {name?.charAt(0).toUpperCase()}
+                                {userName?.charAt(0).toUpperCase()}
                             </Avatar>
                         </IconButton>
                     </Tooltip>
