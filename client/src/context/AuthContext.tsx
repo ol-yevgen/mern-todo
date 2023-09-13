@@ -16,7 +16,6 @@ export const AuthContext = createContext<AuthContextTypes>({
     logout: noop,
     persistentLogin: noop,
     auth: null
-    // auth: { userName: null, accessToken: null }
 })
 
 export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {

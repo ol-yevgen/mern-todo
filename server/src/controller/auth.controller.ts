@@ -76,7 +76,7 @@ export const logout = (req: Request, res: Response, next: NextFunction) => {
         if (!cookies?.refreshToken) return res.sendStatus(204) //No content
 
         res.clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: true })
-        res.status(201).json({ loggedIn: false, message: `Bye, ${userName.split(' ')[0]}!` })
+        return res.status(201).json({ loggedIn: false, message: `Bye, ${userName.split(' ')[0]}!` })
 
     } catch (error) {
         next(error)

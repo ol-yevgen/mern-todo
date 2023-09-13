@@ -19,7 +19,7 @@ export const useHttp = () => {
 
             const response = await fetch(TODO_API, { method, mode, body, credentials, headers })
             const data = await response.json()
-            
+
             if (!response.ok) {
                 throw new Error(data.message);
             }
@@ -29,7 +29,7 @@ export const useHttp = () => {
             });
 
             setLoading(false);
-            
+
             return data;
 
         } catch (error: any) {
@@ -41,6 +41,6 @@ export const useHttp = () => {
         }
     }, [BASE_URL]);
 
-    return { loading, request};
+    return { loading, request };
 }
 
