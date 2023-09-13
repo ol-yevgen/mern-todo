@@ -5,7 +5,12 @@ import jwt from 'jsonwebtoken';
 import 'dotenv/config'
 import bcrypt from 'bcryptjs';
 import logger from '../utils/logger.js';
-// import logger from '../utils/logger.js';
+
+declare module 'jsonwebtoken' {
+    export interface UserIDJwtPayload extends jwt.JwtPayload {
+        userId: string
+    }
+}
 
 interface RegisterUserBody extends Request {
     firstName?: string,
@@ -51,6 +56,7 @@ export const login = async (req: RegisterUserBody, res: Response, next: NextFunc
         // Create secure cookie with refresh token 
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true, //accessible only by web server 
+            sameSite: 'none',
             secure: true, //https
             maxAge: 7 * 24 * 60 * 60 * 1000 //cookie expiry: set to match rT
         })
@@ -88,7 +94,7 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
     try {
         const cookies = req.cookies
 
-        if (!cookies?.refreshToken) return res.status(401)
+        if (!cookies?.refreshToken) return res.status(401).json({message: 'Refresh not found'})
 
         const refreshToken = cookies.refreshToken
 

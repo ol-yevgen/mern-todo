@@ -4,29 +4,30 @@ import { AuthContext } from '../context/AuthContext';
 import { ReqTokenType } from '../types/types'
 
 export const useRefreshToken = () => {
-    const { logout, persistentLogin } = useContext(AuthContext)
+    const { logout, persistentLogin} = useContext(AuthContext)
     const [loading, setLoading] = useState<boolean>(false)
 
     const { request } = useHttp()
 
     const refresh = async () => {
+        try {
+            setLoading(true)
 
-        if (localStorage.getItem('isAuth') !== null) {
+            const data: ReqTokenType = await request('/api/auth/refresh', 'POST', null)
 
-            try {
-                setLoading(true)
+            if (!data) {
+                logout()
+            }
 
-                const data: ReqTokenType = await request('/api/auth/refresh', 'POST', null)
+            persistentLogin(data.accessToken)
+        } catch (error) { }
+        setLoading(false)
 
-                if (!data) {
-                    logout()
-                }
+        // if (localStorage.getItem('isAuth') !== null) {
 
-                persistentLogin(data.accessToken)
-            } catch (error) { }
-            setLoading(false)
+            
 
-        }
+        // }
         
     }
 
