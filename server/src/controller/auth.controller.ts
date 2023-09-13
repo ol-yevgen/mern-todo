@@ -77,7 +77,7 @@ export const logout = (req: Request, res: Response, next: NextFunction) => {
         if (!cookies?.refreshToken) return res.sendStatus(204) //No content
 
         res.clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: true })
-        return res.status(201).json({ loggedIn: false, message: `Bye, ${userName.split(' ')[0]}!` })
+        res.status(201).json({ loggedIn: false, message: `Bye, ${userName.split(' ')[0]}!` })
 
     } catch (error) {
         next(error)
@@ -108,9 +108,8 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
 
         res.json({ accessToken })
 
-
     } catch (error) {
-        logger.info(error)
+        logger.error(error)
         next(error)
     }
 

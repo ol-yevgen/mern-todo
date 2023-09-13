@@ -5,7 +5,10 @@ import 'react-toastify/dist/ReactToastify.css';
 export const useHttp = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
-    const BASE_URL = process.env.REACT_APP_BASE_URL as string;
+    const BASE_URL =
+        process.env.REACT_APP_BASE_URL1
+        || process.env.REACT_APP_BASE_URL2
+        || process.env.REACT_APP_BASE_URL3 as string;
 
     const request = useCallback(async (url: string, method: string, body: any = null, headers: Record<string, string> = {}, mode: RequestMode = 'cors', credentials: RequestCredentials = 'include') => {
         setLoading(true);
