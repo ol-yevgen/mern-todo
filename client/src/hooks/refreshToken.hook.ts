@@ -10,26 +10,26 @@ export const useRefreshToken = () => {
     const { request } = useHttp()
 
     const refresh = async () => {
-        try {
-            setLoading(true)
+        
+        if (localStorage.getItem('isAuth') !== null) {
 
-            const data: ReqTokenType = await request('/api/auth/refresh', 'POST', null)
+            try {
+                setLoading(true)
 
-            if (!data) {
-                logout()
-            }
+                const data: ReqTokenType = await request('/api/auth/refresh', 'POST', null)
 
-            persistentLogin(data.accessToken)
-        } catch (error) { }
-        setLoading(false)
+                if (!data) {
+                    logout()
+                }
 
-        // if (localStorage.getItem('isAuth') !== null) {
+                persistentLogin(data.accessToken)
+            } catch (error) { }
+            setLoading(false)
 
-            
-
-        // }
+        }
         
     }
 
     return { refresh, loading }
 }
+

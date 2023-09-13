@@ -50,6 +50,7 @@ export const Task: FC<TaskProps> = ({ data }) => {
                 height='100%'
                 variant="body2"
                 py='20px'
+                sx={{overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}
             >
                 {capitalizeFirstWord(text)}
             </Typography>
