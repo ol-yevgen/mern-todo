@@ -32,7 +32,7 @@ export const useAuth = () => {
         if (!!auth?.accessToken) {
             const interval = setTimeout(async () => {
                 try {
-                    const data: ReqTokenType = await request('/api/auth/refresh', 'POST')
+                    const data: ReqTokenType = await request('/api/auth/refresh', 'POST', null)
 
                     if (!data) {
                         logout()

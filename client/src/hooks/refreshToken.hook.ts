@@ -16,7 +16,7 @@ export const useRefreshToken = () => {
             try {
                 setLoading(true)
 
-                const data: ReqTokenType = await request('/api/auth/refresh', 'POST')
+                const data: ReqTokenType = await request('/api/auth/refresh', 'POST', null)
 
                 if (!data) {
                     logout()
