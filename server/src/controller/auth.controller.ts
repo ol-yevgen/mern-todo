@@ -50,7 +50,6 @@ export const login = async (req: RegisterUserBody, res: Response, next: NextFunc
         const refreshToken = jwt.sign(
             {
                 userId: user._id,
-                userName: user.firstName + ' ' + user.lastName,  
             },
             REFRESH_TOKEN_SECRET,
             { expiresIn: '7d' }
@@ -100,7 +99,7 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
         
         const refreshToken = cookies.refreshToken
 
-        const { userId, userName } = <jwt.UserIDJwtPayload>jwt.verify(refreshToken, REFRESH_TOKEN_SECRET)
+        const { userId } = <jwt.UserIDJwtPayload>jwt.verify(refreshToken, REFRESH_TOKEN_SECRET)
         
         if (!userId) return res.status(403).json({ message: 'Forbidden' })
 
@@ -114,9 +113,7 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
             { expiresIn: '10m' }
         )
 
-        logger.info({userId: userId, userName: userName} )
-
-        res.json({ accessToken, userName , userId})
+        res.json({ accessToken})
 
     } catch (error) {
         logger.error(error)

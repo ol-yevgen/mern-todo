@@ -4,6 +4,15 @@ export interface AuthTypes {
     userId: string
 }
 
+export interface StorageDataTypes  {
+    userName: string,
+    userId: string
+}
+
+export interface ReqTokenType {
+    accessToken: string
+}
+
 export interface TaskType {
     _id: string,
     title: string,

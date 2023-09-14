@@ -10,7 +10,7 @@ import { useRefreshToken } from "../hooks/refreshToken.hook"
 export const MainLayout: FC = () => {
 
     const { auth } = useContext(AuthContext)
-    const routes = useRoutes(auth?.accessToken)
+    const routes = useRoutes(auth)
     const { refresh, loading } = useRefreshToken()
 
     const navigate: NavigateFunction = useNavigate()

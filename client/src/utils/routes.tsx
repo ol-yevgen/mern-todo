@@ -6,8 +6,10 @@ import { ProfilePage } from '../pages/ProfilePage'
 import { TaskDetailPage } from '../pages/TaskDetailPage'
 import { AddNewTaskPage } from '../pages/AddNewTaskPage'
 import { SettingsPage } from '../pages/SettingsPage'
+import { AuthTypes } from '../types/types'
 
-export const useRoutes = (loggedIn: string | undefined) => {
+
+export const useRoutes = (loggedIn: AuthTypes | null) => {
     if (!!loggedIn) {
         return (
             <Routes>

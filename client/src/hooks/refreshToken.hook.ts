@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { useHttp } from '../hooks/http.hook';
 import { AuthContext } from '../context/AuthContext';
-import { AuthTypes } from '../types/types'
+import { ReqTokenType } from '../types/types'
 
 export const useRefreshToken = () => {
     const { logout, persistentLogin} = useContext(AuthContext)
@@ -10,19 +10,24 @@ export const useRefreshToken = () => {
     const { request } = useHttp()
 
     const refresh = async () => {
+        
+        if (localStorage.getItem('isAuth') !== null) {
 
-        try {
-            setLoading(true)
+            try {
+                setLoading(true)
 
-            const data: AuthTypes = await request('/api/auth/refresh', 'POST', null)
+                const data: ReqTokenType = await request('/api/auth/refresh', 'POST', null)
 
-            if (!data) {
-                logout()
-            }
+                if (!data) {
+                    logout()
+                }
 
-            persistentLogin(data)
-        } catch (error) { }
-        setLoading(false)
+                persistentLogin(data.accessToken)
+            } catch (error) { }
+            setLoading(false)
+
+        }
+        
     }
 
     return { refresh, loading }
