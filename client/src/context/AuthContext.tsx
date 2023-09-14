@@ -5,7 +5,7 @@ import { AuthTypes } from "../types/types"
 export interface AuthContextTypes {
     login: (authData: AuthTypes) => void,
     logout: () => void,
-    persistentLogin: (accessToken: string) => void,
+    persistentLogin: (authData: AuthTypes) => void,
     auth: AuthTypes | null
 }
 
